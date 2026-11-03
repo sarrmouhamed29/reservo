@@ -10,11 +10,12 @@ const client = axios.create({
   },
 })
 
-// On 401, redirect to login
+// On 401, redirect to login — but not during the initial session check
 client.interceptors.response.use(
   (res) => res,
   (error) => {
-    if (error.response?.status === 401) {
+    const isUserCheck = error.config?.url?.endsWith('/user')
+    if (error.response?.status === 401 && !isUserCheck) {
       window.location.href = '/login'
     }
     return Promise.reject(error)
