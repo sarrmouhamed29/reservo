@@ -26,7 +26,12 @@ export function RegisterPage() {
     } catch (err) {
       const data = err.response?.data
       if (data?.errors) setErrors(data.errors)
-      else toast({ variant: 'destructive', title: 'Erreur', description: data?.message || 'Inscription impossible.' })
+      else
+        toast({
+          variant: 'destructive',
+          title: 'Erreur',
+          description: data?.message || 'Inscription impossible.',
+        })
     } finally {
       setLoading(false)
     }
@@ -36,7 +41,9 @@ export function RegisterPage() {
     <div className="space-y-6">
       <div>
         <h2 className="font-display text-2xl font-bold tracking-tight">Créer un compte</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Rejoignez Reservo pour réserver vos espaces.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Rejoignez Reservo pour réserver vos espaces.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

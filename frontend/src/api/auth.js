@@ -1,8 +1,7 @@
 import axios from 'axios'
 import client from './client'
 
-export const getCsrfCookie = () =>
-  axios.get('/sanctum/csrf-cookie', { withCredentials: true })
+export const getCsrfCookie = () => axios.get('/sanctum/csrf-cookie', { withCredentials: true })
 
 export const register = (data) => client.post('/auth/register', data)
 

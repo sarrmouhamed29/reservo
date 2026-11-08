@@ -29,7 +29,7 @@ export function ResourceDetailPage() {
       .then(({ data }) => setResource(data.data))
       .catch(() => navigate('/resources'))
       .finally(() => setLoading(false))
-  }, [id])
+  }, [id, navigate])
 
   const hours = useMemo(() => {
     const { starts_at, ends_at } = bookingForm
@@ -55,9 +55,17 @@ export function ResourceDetailPage() {
       const data = err.response?.data
       if (data?.errors) setBookingErrors(data.errors)
       else if (err.response?.status === 409) {
-        toast({ variant: 'destructive', title: 'Créneau indisponible', description: data?.message || 'Ce créneau est déjà réservé. Choisissez une autre plage.' })
+        toast({
+          variant: 'destructive',
+          title: 'Créneau indisponible',
+          description: data?.message || 'Ce créneau est déjà réservé. Choisissez une autre plage.',
+        })
       } else {
-        toast({ variant: 'destructive', title: 'Réservation impossible', description: data?.message || 'Vérifiez les dates puis réessayez.' })
+        toast({
+          variant: 'destructive',
+          title: 'Réservation impossible',
+          description: data?.message || 'Vérifiez les dates puis réessayez.',
+        })
       }
     } finally {
       setSubmitting(false)
@@ -80,8 +88,13 @@ export function ResourceDetailPage() {
 
   return (
     <div className="space-y-6">
-      <nav aria-label="Fil d'Ariane" className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <Link to="/resources" className="hover:text-foreground">Catalogue</Link>
+      <nav
+        aria-label="Fil d'Ariane"
+        className="flex items-center gap-1.5 text-sm text-muted-foreground"
+      >
+        <Link to="/resources" className="hover:text-foreground">
+          Catalogue
+        </Link>
         <ChevronRight className="h-4 w-4" />
         <span className="text-foreground">{resource.name}</span>
       </nav>
@@ -103,13 +116,19 @@ export function ResourceDetailPage() {
               )}
             </div>
             {resource.description && (
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">{resource.description}</p>
+              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+                {resource.description}
+              </p>
             )}
           </div>
 
           <div className="overflow-hidden rounded-lg border border-border bg-secondary shadow-card">
             {images.length > 0 ? (
-              <img src={images[activeImage]?.url} alt={resource.name} className="aspect-[16/9] w-full object-cover" />
+              <img
+                src={images[activeImage]?.url}
+                alt={resource.name}
+                className="aspect-[16/9] w-full object-cover"
+              />
             ) : (
               <div className="flex aspect-[16/9] items-center justify-center">
                 <TypeIcon className="h-16 w-16 text-muted-foreground/30" />
@@ -139,7 +158,8 @@ export function ResourceDetailPage() {
             <div>
               <h2 className="font-display text-lg font-semibold">Créneau garanti</h2>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                Deux réservations ne peuvent jamais se chevaucher : si le créneau est déjà pris, vous êtes prévenu avant de payer.
+                Deux réservations ne peuvent jamais se chevaucher : si le créneau est déjà pris,
+                vous êtes prévenu avant de payer.
               </p>
             </div>
           </div>
@@ -148,11 +168,16 @@ export function ResourceDetailPage() {
         {/* Booking panel */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
           {user && user.role !== 'admin' ? (
-            <form onSubmit={handleBook} className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-pop">
+            <form
+              onSubmit={handleBook}
+              className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-pop"
+            >
               <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
                 <h2 className="font-display text-xl font-semibold">Réserver ce créneau</h2>
                 <p className="text-right">
-                  <span className="font-display text-2xl font-bold text-primary">{formatCents(resource.hourly_price_cents)}</span>
+                  <span className="font-display text-2xl font-bold text-primary">
+                    {formatCents(resource.hourly_price_cents)}
+                  </span>
                   <span className="block text-xs text-muted-foreground">par heure</span>
                 </p>
               </div>
@@ -166,7 +191,9 @@ export function ResourceDetailPage() {
                     value={bookingForm.starts_at}
                     onChange={(e) => setBookingForm((f) => ({ ...f, starts_at: e.target.value }))}
                   />
-                  {bookingErrors.starts_at && <p className="text-xs text-destructive">{bookingErrors.starts_at[0]}</p>}
+                  {bookingErrors.starts_at && (
+                    <p className="text-xs text-destructive">{bookingErrors.starts_at[0]}</p>
+                  )}
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="ends_at">Fin</Label>
@@ -176,8 +203,12 @@ export function ResourceDetailPage() {
                     value={bookingForm.ends_at}
                     onChange={(e) => setBookingForm((f) => ({ ...f, ends_at: e.target.value }))}
                   />
-                  {bookingErrors.ends_at && <p className="text-xs text-destructive">{bookingErrors.ends_at[0]}</p>}
-                  {bookingErrors.resource_id && <p className="text-xs text-destructive">{bookingErrors.resource_id[0]}</p>}
+                  {bookingErrors.ends_at && (
+                    <p className="text-xs text-destructive">{bookingErrors.ends_at[0]}</p>
+                  )}
+                  {bookingErrors.resource_id && (
+                    <p className="text-xs text-destructive">{bookingErrors.resource_id[0]}</p>
+                  )}
                 </div>
               </div>
 
@@ -189,7 +220,11 @@ export function ResourceDetailPage() {
               <dl className="space-y-2 rounded-lg border border-border bg-background p-4 text-sm">
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">Durée</dt>
-                  <dd className="font-medium">{hours ? `${hours.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} h` : '—'}</dd>
+                  <dd className="font-medium">
+                    {hours
+                      ? `${hours.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} h`
+                      : '—'}
+                  </dd>
                 </div>
                 <div className="flex justify-between border-t border-border pt-2">
                   <dt className="font-semibold">Total estimé</dt>
@@ -210,10 +245,16 @@ export function ResourceDetailPage() {
           ) : !user ? (
             <div className="space-y-4 rounded-xl border border-border bg-card p-6 text-center shadow-pop">
               <p className="font-display text-xl font-semibold">Réservez cette ressource</p>
-              <p className="text-sm text-muted-foreground">Connectez-vous pour choisir un créneau et payer.</p>
+              <p className="text-sm text-muted-foreground">
+                Connectez-vous pour choisir un créneau et payer.
+              </p>
               <div className="flex flex-col gap-2">
-                <Button asChild><Link to={`/login?redirect=/resources/${resource.id}`}>Se connecter</Link></Button>
-                <Button variant="outline" asChild><Link to="/register">Créer un compte</Link></Button>
+                <Button asChild>
+                  <Link to={`/login?redirect=/resources/${resource.id}`}>Se connecter</Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to="/register">Créer un compte</Link>
+                </Button>
               </div>
             </div>
           ) : null}

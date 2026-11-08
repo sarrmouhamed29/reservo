@@ -1,16 +1,35 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CalendarClock, CalendarX, Clock, Timer, Wallet } from 'lucide-react'
 import { cancelBooking, createPayDunyaCheckout, listBookings } from '@/api/bookings'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { toast } from '@/hooks/use-toast'
 import { cn, formatCents } from '@/lib/utils'
 
 const STATUS = {
-  pending: { label: 'En attente de paiement', className: 'bg-amber-50 text-amber-800 border-amber-200', dot: 'bg-amber-500' },
-  paid: { label: 'Payée', className: 'bg-emerald-50 text-emerald-800 border-emerald-200', dot: 'bg-emerald-500' },
-  cancelled: { label: 'Annulée', className: 'bg-secondary text-muted-foreground border-border', dot: 'bg-muted-foreground' },
+  pending: {
+    label: 'En attente de paiement',
+    className: 'bg-amber-50 text-amber-800 border-amber-200',
+    dot: 'bg-amber-500',
+  },
+  paid: {
+    label: 'Payée',
+    className: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    dot: 'bg-emerald-500',
+  },
+  cancelled: {
+    label: 'Annulée',
+    className: 'bg-secondary text-muted-foreground border-border',
+    dot: 'bg-muted-foreground',
+  },
 }
 
 const TABS = [
@@ -19,7 +38,12 @@ const TABS = [
   { id: 'cancelled', label: 'Annulées' },
 ]
 
-const dayFmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+const dayFmt = new Intl.DateTimeFormat('fr-FR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+})
 const timeFmt = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' })
 
 function duration(start, end) {
@@ -40,7 +64,7 @@ function Detail({ icon: Icon, label, children }) {
       <Icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
       <div>
         <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="text-sm font-medium capitalize-first">{children}</p>
+        <p className="capitalize-first text-sm font-medium">{children}</p>
       </div>
     </div>
   )
@@ -61,13 +85,15 @@ export function BookingsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => { fetchBookings() }, [fetchBookings])
+  useEffect(() => {
+    fetchBookings()
+  }, [fetchBookings])
 
-  const now = useMemo(() => new Date(), [bookings])
-  const counts = useMemo(
-    () => bookings.reduce((acc, b) => ({ ...acc, [tabOf(b, now)]: (acc[tabOf(b, now)] ?? 0) + 1 }), {}),
-    [bookings, now],
-  )
+  const now = new Date()
+  const counts = bookings.reduce((acc, b) => {
+    const t = tabOf(b, now)
+    return { ...acc, [t]: (acc[t] ?? 0) + 1 }
+  }, {})
   const visible = bookings.filter((b) => tabOf(b, now) === tab)
   const committed = bookings
     .filter((b) => b.status !== 'cancelled')
@@ -81,7 +107,11 @@ export function BookingsPage() {
       toast({ title: 'Réservation annulée' })
       fetchBookings()
     } catch {
-      toast({ variant: 'destructive', title: 'Erreur', description: "Impossible d'annuler cette réservation." })
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: "Impossible d'annuler cette réservation.",
+      })
     } finally {
       setCancelling(false)
       setCancelTarget(null)
@@ -94,7 +124,11 @@ export function BookingsPage() {
       const { data } = await createPayDunyaCheckout(booking.id)
       window.location.href = data.checkout_url
     } catch {
-      toast({ variant: 'destructive', title: 'Paiement indisponible', description: 'Impossible de lancer le paiement. Réessayez dans un instant.' })
+      toast({
+        variant: 'destructive',
+        title: 'Paiement indisponible',
+        description: 'Impossible de lancer le paiement. Réessayez dans un instant.',
+      })
       setCheckingOut(null)
     }
   }
@@ -112,7 +146,9 @@ export function BookingsPage() {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-xl">
           <h1 className="font-display text-4xl font-bold tracking-tight">Mes réservations</h1>
-          <p className="mt-2 text-lg text-muted-foreground">Suivez vos créneaux, réglez ceux en attente, annulez au besoin.</p>
+          <p className="mt-2 text-lg text-muted-foreground">
+            Suivez vos créneaux, réglez ceux en attente, annulez au besoin.
+          </p>
         </div>
         <div className="flex gap-3">
           <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-card">
@@ -132,7 +168,10 @@ export function BookingsPage() {
         </div>
       </div>
 
-      <div role="tablist" className="inline-flex gap-1 rounded-lg border border-border bg-card p-1 shadow-card">
+      <div
+        role="tablist"
+        className="inline-flex gap-1 rounded-lg border border-border bg-card p-1 shadow-card"
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -141,11 +180,18 @@ export function BookingsPage() {
             onClick={() => setTab(t.id)}
             className={cn(
               'flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              tab === t.id ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground',
+              tab === t.id
+                ? 'bg-primary/10 text-primary'
+                : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {t.label}
-            <span className={cn('rounded-full px-2 text-xs', tab === t.id ? 'bg-primary/15' : 'bg-secondary')}>
+            <span
+              className={cn(
+                'rounded-full px-2 text-xs',
+                tab === t.id ? 'bg-primary/15' : 'bg-secondary'
+              )}
+            >
               {counts[t.id] ?? 0}
             </span>
           </button>
@@ -157,7 +203,9 @@ export function BookingsPage() {
           <CalendarX className="h-12 w-12 text-muted-foreground/40" />
           <p className="font-medium">Aucune réservation ici</p>
           <p className="text-sm text-muted-foreground">
-            {tab === 'upcoming' ? 'Réservez une salle ou du matériel pour la voir apparaître.' : 'Rien à afficher dans cette liste.'}
+            {tab === 'upcoming'
+              ? 'Réservez une salle ou du matériel pour la voir apparaître.'
+              : 'Rien à afficher dans cette liste.'}
           </p>
           {tab === 'upcoming' && (
             <Button asChild>
@@ -173,9 +221,14 @@ export function BookingsPage() {
             const start = new Date(b.starts_at)
             const end = new Date(b.ends_at)
             return (
-              <article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card shadow-card md:flex">
+              <article
+                key={b.id}
+                className="overflow-hidden rounded-lg border border-border bg-card shadow-card md:flex"
+              >
                 <div className="aspect-[16/9] bg-secondary md:aspect-auto md:w-64 md:shrink-0 lg:w-80">
-                  {image && <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" />}
+                  {image && (
+                    <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6">
                   <div className="flex flex-wrap items-start justify-between gap-3">
@@ -184,27 +237,48 @@ export function BookingsPage() {
                         <span className="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
                           Réf. {String(b.id).padStart(5, '0')}
                         </span>
-                        <span className={cn('inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold', st.className)}>
+                        <span
+                          className={cn(
+                            'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+                            st.className
+                          )}
+                        >
                           <span className={cn('h-1.5 w-1.5 rounded-full', st.dot)} />
                           {st.label}
                         </span>
                       </div>
-                      <h2 className="font-display text-2xl font-semibold">{b.resource?.name ?? `Ressource #${b.resource_id}`}</h2>
+                      <h2 className="font-display text-2xl font-semibold">
+                        {b.resource?.name ?? `Ressource #${b.resource_id}`}
+                      </h2>
                     </div>
-                    <p className="font-display text-2xl font-bold">{formatCents(b.total_price_cents)}</p>
+                    <p className="font-display text-2xl font-bold">
+                      {formatCents(b.total_price_cents)}
+                    </p>
                   </div>
 
                   <div className="grid gap-4 rounded-lg border border-border bg-background p-4 sm:grid-cols-3">
-                    <Detail icon={CalendarClock} label="Date">{dayFmt.format(start)}</Detail>
-                    <Detail icon={Clock} label="Horaire">{timeFmt.format(start)} – {timeFmt.format(end)}</Detail>
-                    <Detail icon={Timer} label="Durée">{duration(b.starts_at, b.ends_at)}</Detail>
+                    <Detail icon={CalendarClock} label="Date">
+                      {dayFmt.format(start)}
+                    </Detail>
+                    <Detail icon={Clock} label="Horaire">
+                      {timeFmt.format(start)} – {timeFmt.format(end)}
+                    </Detail>
+                    <Detail icon={Timer} label="Durée">
+                      {duration(b.starts_at, b.ends_at)}
+                    </Detail>
                   </div>
 
                   {b.status === 'pending' && (
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
-                      <p className="text-sm text-muted-foreground">Le créneau n'est garanti qu'une fois le paiement reçu.</p>
+                      <p className="text-sm text-muted-foreground">
+                        Le créneau n'est garanti qu'une fois le paiement reçu.
+                      </p>
                       <div className="flex gap-2">
-                        <Button variant="outline" onClick={() => setCancelTarget(b)} className="border-red-200 text-red-700 hover:bg-red-50">
+                        <Button
+                          variant="outline"
+                          onClick={() => setCancelTarget(b)}
+                          className="border-red-200 text-red-700 hover:bg-red-50"
+                        >
                           Annuler
                         </Button>
                         <Button onClick={() => handlePay(b)} disabled={checkingOut === b.id}>
@@ -220,7 +294,12 @@ export function BookingsPage() {
         </div>
       )}
 
-      <Dialog open={!!cancelTarget} onOpenChange={(open) => { if (!open) setCancelTarget(null) }}>
+      <Dialog
+        open={!!cancelTarget}
+        onOpenChange={(open) => {
+          if (!open) setCancelTarget(null)
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Annuler cette réservation ?</DialogTitle>

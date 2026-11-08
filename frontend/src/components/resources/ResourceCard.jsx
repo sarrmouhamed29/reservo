@@ -10,7 +10,10 @@ export function ResourceCard({ resource }) {
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card transition-shadow duration-200 hover:shadow-lift">
-      <Link to={`/resources/${resource.id}`} className="relative block aspect-[16/10] overflow-hidden bg-secondary">
+      <Link
+        to={`/resources/${resource.id}`}
+        className="relative block aspect-[16/10] overflow-hidden bg-secondary"
+      >
         {image ? (
           <img
             src={image.url}
@@ -49,7 +52,9 @@ export function ResourceCard({ resource }) {
       <div className="flex items-center justify-between gap-3 border-t border-border bg-background/60 px-5 py-4">
         <div>
           <p className="text-xs text-muted-foreground">Tarif horaire</p>
-          <p className="font-display text-xl font-bold text-primary">{formatCents(resource.hourly_price_cents)}</p>
+          <p className="font-display text-xl font-bold text-primary">
+            {formatCents(resource.hourly_price_cents)}
+          </p>
         </div>
         <Link
           to={`/resources/${resource.id}`}

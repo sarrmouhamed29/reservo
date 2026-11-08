@@ -13,9 +13,15 @@ export function Footer() {
           <span>© {new Date().getFullYear()} Reservo. Tous droits réservés.</span>
         </div>
         <div className="flex gap-6">
-          <Link to="/resources" className="hover:text-foreground">Catalogue</Link>
-          <Link to="/login" className="hover:text-foreground">Connexion</Link>
-          <Link to="/register" className="hover:text-foreground">Créer un compte</Link>
+          <Link to="/resources" className="hover:text-foreground">
+            Catalogue
+          </Link>
+          <Link to="/login" className="hover:text-foreground">
+            Connexion
+          </Link>
+          <Link to="/register" className="hover:text-foreground">
+            Créer un compte
+          </Link>
         </div>
       </div>
     </footer>

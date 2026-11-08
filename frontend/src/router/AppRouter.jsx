@@ -38,24 +38,44 @@ export function AppRouter() {
 
             <Route
               path="/bookings"
-              element={<ProtectedRoute><BookingsPage /></ProtectedRoute>}
+              element={
+                <ProtectedRoute>
+                  <BookingsPage />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/bookings/success"
-              element={<ProtectedRoute><BookingSuccessPage /></ProtectedRoute>}
+              element={
+                <ProtectedRoute>
+                  <BookingSuccessPage />
+                </ProtectedRoute>
+              }
             />
 
             <Route
               path="/admin/resources"
-              element={<AdminRoute><AdminResourcesPage /></AdminRoute>}
+              element={
+                <AdminRoute>
+                  <AdminResourcesPage />
+                </AdminRoute>
+              }
             />
             <Route
               path="/admin/resources/new"
-              element={<AdminRoute><AdminResourceFormPage /></AdminRoute>}
+              element={
+                <AdminRoute>
+                  <AdminResourceFormPage />
+                </AdminRoute>
+              }
             />
             <Route
               path="/admin/resources/:id/edit"
-              element={<AdminRoute><AdminResourceFormPage /></AdminRoute>}
+              element={
+                <AdminRoute>
+                  <AdminResourceFormPage />
+                </AdminRoute>
+              }
             />
 
             <Route path="*" element={<NotFoundPage />} />

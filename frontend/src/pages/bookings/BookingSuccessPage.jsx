@@ -14,7 +14,10 @@ export function BookingSuccessPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!paydunyaToken && !stripeSessionId) { setLoading(false); return }
+    if (!paydunyaToken && !stripeSessionId) {
+      setLoading(false)
+      return
+    }
 
     let attempts = 0
     const poll = async () => {
@@ -59,7 +62,9 @@ export function BookingSuccessPage() {
         <Card>
           <CardContent className="p-4 text-left text-sm">
             <p className="font-medium">{booking.resource?.name}</p>
-            <p className="text-muted-foreground">Statut : {booking.status === 'paid' ? '✓ Payé' : 'En attente de confirmation'}</p>
+            <p className="text-muted-foreground">
+              Statut : {booking.status === 'paid' ? '✓ Payé' : 'En attente de confirmation'}
+            </p>
           </CardContent>
         </Card>
       ) : null}

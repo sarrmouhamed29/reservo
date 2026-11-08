@@ -28,7 +28,12 @@ export function LoginPage() {
     } catch (err) {
       const data = err.response?.data
       if (data?.errors) setErrors(data.errors)
-      else toast({ variant: 'destructive', title: 'Erreur', description: data?.message || 'Connexion impossible.' })
+      else
+        toast({
+          variant: 'destructive',
+          title: 'Erreur',
+          description: data?.message || 'Connexion impossible.',
+        })
     } finally {
       setLoading(false)
     }

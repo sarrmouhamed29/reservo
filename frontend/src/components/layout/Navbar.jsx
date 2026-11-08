@@ -10,7 +10,7 @@ const linkClass = ({ isActive }) =>
     'whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
     isActive
       ? 'bg-primary text-primary-foreground'
-      : 'text-foreground/80 hover:bg-secondary hover:text-foreground',
+      : 'text-foreground/80 hover:bg-secondary hover:text-foreground'
   )
 
 function initials(name = '') {
@@ -44,9 +44,19 @@ export function Navbar() {
           aria-label="Navigation principale"
           className="order-last flex w-full items-center gap-1 overflow-x-auto md:order-none md:w-auto md:flex-1"
         >
-          <NavLink to="/resources" className={linkClass}>Catalogue</NavLink>
-          {user && <NavLink to="/bookings" className={linkClass}>Mes réservations</NavLink>}
-          {user?.role === 'admin' && <NavLink to="/admin/resources" className={linkClass}>Administration</NavLink>}
+          <NavLink to="/resources" className={linkClass}>
+            Catalogue
+          </NavLink>
+          {user && (
+            <NavLink to="/bookings" className={linkClass}>
+              Mes réservations
+            </NavLink>
+          )}
+          {user?.role === 'admin' && (
+            <NavLink to="/admin/resources" className={linkClass}>
+              Administration
+            </NavLink>
+          )}
         </nav>
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">
@@ -58,7 +68,12 @@ export function Navbar() {
                 </span>
                 <span className="text-sm font-medium">{user.name}</span>
               </div>
-              <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 text-foreground/80">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="gap-2 text-foreground/80"
+              >
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Déconnexion</span>
               </Button>
@@ -75,7 +90,6 @@ export function Navbar() {
           )}
         </div>
       </div>
-
     </header>
   )
 }

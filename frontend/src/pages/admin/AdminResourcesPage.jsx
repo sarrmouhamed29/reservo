@@ -4,7 +4,14 @@ import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { deleteResource, listResources } from '@/api/resources'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { toast } from '@/hooks/use-toast'
 import { formatCents } from '@/lib/utils'
 
@@ -21,7 +28,9 @@ export function AdminResourcesPage() {
       .finally(() => setLoading(false))
   }
 
-  useEffect(() => { fetchAll() }, [])
+  useEffect(() => {
+    fetchAll()
+  }, [])
 
   const handleDelete = async () => {
     if (!deleteTarget) return
@@ -31,7 +40,11 @@ export function AdminResourcesPage() {
       toast({ title: 'Ressource supprimée' })
       fetchAll()
     } catch (err) {
-      toast({ variant: 'destructive', title: 'Erreur', description: err.response?.data?.message || 'Suppression impossible.' })
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: err.response?.data?.message || 'Suppression impossible.',
+      })
     } finally {
       setDeleting(false)
       setDeleteTarget(null)
@@ -104,16 +117,24 @@ export function AdminResourcesPage() {
         </div>
       )}
 
-      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
+      <Dialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null)
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Supprimer la ressource</DialogTitle>
             <DialogDescription>
-              Êtes-vous sûr de vouloir supprimer <strong>{deleteTarget?.name}</strong> ? Cette action est irréversible.
+              Êtes-vous sûr de vouloir supprimer <strong>{deleteTarget?.name}</strong> ? Cette
+              action est irréversible.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={deleting}>Annuler</Button>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={deleting}>
+              Annuler
+            </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
               {deleting ? 'Suppression…' : 'Supprimer'}
             </Button>

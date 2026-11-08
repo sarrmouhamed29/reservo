@@ -45,7 +45,8 @@ export function ResourcesPage() {
       <div className="max-w-2xl">
         <h1 className="font-display text-4xl font-bold tracking-tight">Catalogue des ressources</h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Salles de réunion et matériel professionnel. Choisissez, vérifiez les créneaux libres, réservez.
+          Salles de réunion et matériel professionnel. Choisissez, vérifiez les créneaux libres,
+          réservez.
         </p>
       </div>
 
@@ -61,7 +62,7 @@ export function ResourcesPage() {
                 'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors',
                 type === t.value
                   ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-border bg-card text-foreground/80 hover:border-primary/50 hover:text-primary',
+                  : 'border-border bg-card text-foreground/80 hover:border-primary/50 hover:text-primary'
               )}
             >
               {t.label}
@@ -92,7 +93,9 @@ export function ResourcesPage() {
         <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border py-16 text-center">
           <SlidersHorizontal className="h-10 w-10 text-muted-foreground/40" />
           <p className="font-medium">Aucune ressource ne correspond</p>
-          <p className="text-sm text-muted-foreground">Retirez un filtre ou cherchez un autre nom.</p>
+          <p className="text-sm text-muted-foreground">
+            Retirez un filtre ou cherchez un autre nom.
+          </p>
         </div>
       ) : (
         <>

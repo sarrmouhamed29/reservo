@@ -4,7 +4,13 @@ import { createResource, getResource, updateResource } from '@/api/resources'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
 
@@ -40,7 +46,7 @@ export function AdminResourceFormPage() {
         })
       })
       .finally(() => setLoading(false))
-  }, [id])
+  }, [id, isEdit])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -68,7 +74,12 @@ export function AdminResourceFormPage() {
     } catch (err) {
       const data = err.response?.data
       if (data?.errors) setErrors(data.errors)
-      else toast({ variant: 'destructive', title: 'Erreur', description: data?.message || 'Enregistrement impossible.' })
+      else
+        toast({
+          variant: 'destructive',
+          title: 'Erreur',
+          description: data?.message || 'Enregistrement impossible.',
+        })
     } finally {
       setSaving(false)
     }
@@ -94,14 +105,23 @@ export function AdminResourceFormPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="name">Nom</Label>
-              <Input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Salle de conférence A" />
+              <Input
+                id="name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Salle de conférence A"
+              />
               {errors.name && <p className="text-xs text-destructive">{errors.name[0]}</p>}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label>Type</Label>
-                <Select value={form.type} onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}>
+                <Select
+                  value={form.type}
+                  onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -113,7 +133,15 @@ export function AdminResourceFormPage() {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="capacity">Capacité (personnes)</Label>
-                <Input id="capacity" name="capacity" type="number" min="1" value={form.capacity} onChange={handleChange} placeholder="20" />
+                <Input
+                  id="capacity"
+                  name="capacity"
+                  type="number"
+                  min="1"
+                  value={form.capacity}
+                  onChange={handleChange}
+                  placeholder="20"
+                />
               </div>
             </div>
 
@@ -141,7 +169,9 @@ export function AdminResourceFormPage() {
                 onChange={handleChange}
                 placeholder="5000 = 50,00 €"
               />
-              {errors.hourly_price_cents && <p className="text-xs text-destructive">{errors.hourly_price_cents[0]}</p>}
+              {errors.hourly_price_cents && (
+                <p className="text-xs text-destructive">{errors.hourly_price_cents[0]}</p>
+              )}
               {form.hourly_price_cents && (
                 <p className="text-xs text-muted-foreground">
                   Soit {(parseInt(form.hourly_price_cents) / 100).toFixed(2)} € / heure
@@ -162,9 +192,11 @@ export function AdminResourceFormPage() {
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
-              <Button type="button" variant="outline" onClick={() => navigate(-1)}>Annuler</Button>
+              <Button type="button" variant="outline" onClick={() => navigate(-1)}>
+                Annuler
+              </Button>
               <Button type="submit" disabled={saving}>
-                {saving ? 'Enregistrement…' : (isEdit ? 'Mettre à jour' : 'Créer la ressource')}
+                {saving ? 'Enregistrement…' : isEdit ? 'Mettre à jour' : 'Créer la ressource'}
               </Button>
             </div>
           </form>

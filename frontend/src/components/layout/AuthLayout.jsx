@@ -21,7 +21,8 @@ export function AuthLayout() {
               Réservez vos espaces en quelques clics.
             </p>
             <p className="mt-3 text-lg leading-relaxed text-white/80">
-              Salles de réunion et matériel, disponibles à l'heure, payables par Orange Money, Wave ou carte.
+              Salles de réunion et matériel, disponibles à l'heure, payables par Orange Money, Wave
+              ou carte.
             </p>
           </div>
         </div>

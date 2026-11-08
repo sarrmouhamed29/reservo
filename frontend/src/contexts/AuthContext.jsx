@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getCsrfCookie, getUser, login as apiLogin, logout as apiLogout, register as apiRegister } from '@/api/auth'
+import {
+  getCsrfCookie,
+  getUser,
+  login as apiLogin,
+  logout as apiLogout,
+  register as apiRegister,
+} from '@/api/auth'
 
 const AuthContext = createContext(null)
 
@@ -31,7 +37,12 @@ export function AuthProvider({ children }) {
 
   const register = async (name, email, password, passwordConfirmation) => {
     await getCsrfCookie()
-    const { data } = await apiRegister({ name, email, password, password_confirmation: passwordConfirmation })
+    const { data } = await apiRegister({
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    })
     setUser(data.data)
     return data.data
   }

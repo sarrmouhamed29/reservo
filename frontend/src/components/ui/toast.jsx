@@ -24,7 +24,8 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: 'border bg-background text-foreground',
-        destructive: 'destructive group border-destructive bg-destructive text-destructive-foreground',
+        destructive:
+          'destructive group border-destructive bg-destructive text-destructive-foreground',
       },
     },
     defaultVariants: { variant: 'default' },
@@ -64,13 +65,29 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
 ToastClose.displayName = ToastPrimitive.Close.displayName
 
 const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
-  <ToastPrimitive.Title ref={ref} className={cn('text-sm font-semibold [&+div]:text-xs', className)} {...props} />
+  <ToastPrimitive.Title
+    ref={ref}
+    className={cn('text-sm font-semibold [&+div]:text-xs', className)}
+    {...props}
+  />
 ))
 ToastTitle.displayName = ToastPrimitive.Title.displayName
 
 const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <ToastPrimitive.Description ref={ref} className={cn('text-sm opacity-90', className)} {...props} />
+  <ToastPrimitive.Description
+    ref={ref}
+    className={cn('text-sm opacity-90', className)}
+    {...props}
+  />
 ))
 ToastDescription.displayName = ToastPrimitive.Description.displayName
 
-export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastAction, ToastClose }
+export {
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastAction,
+  ToastClose,
+}

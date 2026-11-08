@@ -3,16 +3,25 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, Clock, Lock, ShieldCheck } from 'lucide-react'
 import { listResources } from '@/api/resources'
 import { ResourceCard } from '@/components/resources/ResourceCard'
-import { PAYDUNYA_METHODS } from '@/components/payment/PaymentMethodSelector'
+import { PAYDUNYA_METHODS } from '@/components/payment/paydunyaMethods'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1800&q=80'
 
 const STEPS = [
-  { title: 'Choisissez', text: 'Parcourez les salles et le matériel, filtrez par type ou par nom.' },
-  { title: 'Sélectionnez un créneau', text: 'Indiquez le début et la fin. Un créneau déjà pris est refusé immédiatement.' },
-  { title: 'Payez', text: 'Orange Money, Wave, Free Money, carte bancaire. La réservation est confirmée dès réception du paiement.' },
+  {
+    title: 'Choisissez',
+    text: 'Parcourez les salles et le matériel, filtrez par type ou par nom.',
+  },
+  {
+    title: 'Sélectionnez un créneau',
+    text: 'Indiquez le début et la fin. Un créneau déjà pris est refusé immédiatement.',
+  },
+  {
+    title: 'Payez',
+    text: 'Orange Money, Wave, Free Money, carte bancaire. La réservation est confirmée dès réception du paiement.',
+  },
 ]
 
 /** Illustrative slot picker, mirrors the one on a resource page. */
@@ -135,8 +144,12 @@ export function LandingPage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-xl">
-            <h2 className="font-display text-3xl font-bold tracking-tight">Disponibles maintenant</h2>
-            <p className="mt-2 text-muted-foreground">Un aperçu du catalogue. Tout est réservable à l'heure.</p>
+            <h2 className="font-display text-3xl font-bold tracking-tight">
+              Disponibles maintenant
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Un aperçu du catalogue. Tout est réservable à l'heure.
+            </p>
           </div>
           <Button variant="outline" asChild>
             <Link to="/resources">
@@ -162,7 +175,9 @@ export function LandingPage() {
       {/* How it works */}
       <section className="border-y border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <h2 className="max-w-xl font-display text-3xl font-bold tracking-tight">Trois étapes, sans échange de mails</h2>
+          <h2 className="max-w-xl font-display text-3xl font-bold tracking-tight">
+            Trois étapes, sans échange de mails
+          </h2>
           <ol className="mt-10 grid gap-8 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <li key={s.title} className="relative border-t-2 border-primary pt-5">
@@ -191,8 +206,8 @@ export function LandingPage() {
             },
             {
               icon: Clock,
-              title: 'Annulation tant que ce n\'est pas payé',
-              text: 'Une réservation en attente se règle ou s\'annule depuis « Mes réservations ». Le créneau est alors libéré pour les autres.',
+              title: "Annulation tant que ce n'est pas payé",
+              text: "Une réservation en attente se règle ou s'annule depuis « Mes réservations ». Le créneau est alors libéré pour les autres.",
             },
           ].map(({ icon: Icon, title, text }) => (
             <div key={title} className="rounded-lg border border-border bg-card p-6 shadow-card">
@@ -210,9 +225,12 @@ export function LandingPage() {
       <section className="bg-foreground">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 sm:px-6 md:flex-row md:items-center lg:px-8">
           <div>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-white">Prêt à réserver votre prochaine salle ?</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-white">
+              Prêt à réserver votre prochaine salle ?
+            </h2>
             <p className="mt-2 flex items-center gap-2 text-white/70">
-              <CheckCircle2 className="h-4 w-4" /> Inscription gratuite, paiement uniquement à la réservation.
+              <CheckCircle2 className="h-4 w-4" /> Inscription gratuite, paiement uniquement à la
+              réservation.
             </p>
           </div>
           <Button size="lg" asChild>
