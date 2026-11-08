@@ -54,10 +54,16 @@ class CreatePayDunyaCheckoutAction
             throw new RuntimeException('PayDunya invoice creation failed: '.($data['response_text'] ?? 'unknown error'));
         }
 
-        $token = $data['token'];
+        // On success PayDunya puts the checkout URL in `response_text` (there is no `redirect_url`).
+        $checkoutUrl = $data['response_text'] ?? '';
+        $token = $data['token'] ?? '';
+
+        if ($token === '' || ! filter_var($checkoutUrl, FILTER_VALIDATE_URL)) {
+            throw new RuntimeException('PayDunya returned an unexpected invoice response.');
+        }
 
         $booking->update(['paydunya_invoice_token' => $token]);
 
-        return $data['redirect_url'];
+        return $checkoutUrl;
     }
 }

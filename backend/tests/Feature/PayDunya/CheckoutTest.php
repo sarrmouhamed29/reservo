@@ -18,8 +18,9 @@ test('owner gets a paydunya checkout url and the invoice token is stored', funct
     Http::fake([
         '*/checkout-invoice/create' => Http::response([
             'response_code' => '00',
+            'response_text' => 'https://paydunya.test/checkout/inv_123',
+            'description' => 'Checkout Invoice Created',
             'token' => 'inv_123',
-            'redirect_url' => 'https://paydunya.test/checkout/inv_123',
         ]),
     ]);
     $user = User::factory()->create();
@@ -39,7 +40,7 @@ test('owner gets a paydunya checkout url and the invoice token is stored', funct
 test('live mode calls the production api', function () {
     config(['services.paydunya.mode' => 'live']);
     Http::fake([
-        '*' => Http::response(['response_code' => '00', 'token' => 't', 'redirect_url' => 'https://p.test']),
+        '*' => Http::response(['response_code' => '00', 'token' => 't', 'response_text' => 'https://p.test']),
     ]);
     $user = User::factory()->create();
     $booking = Booking::factory()->for($user)->create();
@@ -81,6 +82,20 @@ test('a paydunya failure surfaces as an error and stores nothing', function () {
     $this->withoutExceptionHandling();
     expect(fn () => $this->actingAs($user)->postJson("/api/v1/bookings/{$booking->id}/paydunya-checkout"))
         ->toThrow(RuntimeException::class, 'Invalid keys');
+
+    expect($booking->fresh()->paydunya_invoice_token)->toBeNull();
+});
+
+test('a success response without a usable url is rejected and stores nothing', function () {
+    Http::fake([
+        '*/checkout-invoice/create' => Http::response(['response_code' => '00', 'token' => 'inv_9', 'response_text' => 'not a url']),
+    ]);
+    $user = User::factory()->create();
+    $booking = Booking::factory()->for($user)->create();
+
+    $this->withoutExceptionHandling();
+    expect(fn () => $this->actingAs($user)->postJson("/api/v1/bookings/{$booking->id}/paydunya-checkout"))
+        ->toThrow(RuntimeException::class, 'unexpected invoice response');
 
     expect($booking->fresh()->paydunya_invoice_token)->toBeNull();
 });
