@@ -15,6 +15,7 @@ Admins manage the catalogue.
 | ![Catalogue](docs/screenshots/04-catalogue.jpg) **Catalogue** — search, availability window, type and capacity filters, sort, pagination | ![Slot picker](docs/screenshots/05-creneaux.jpg) **Slot picker** — taken hours come from the database and cannot be selected |
 | ![Payment](docs/screenshots/06-paiement.jpg) **Payment** — recap, then PayDunya or Stripe checkout | ![My bookings](docs/screenshots/07-mes-reservations.jpg) **My bookings** — status, tabs, sort, pay or cancel |
 | ![Sign in](docs/screenshots/03-connexion.jpg) **Sign in** | ![Admin](docs/screenshots/08-administration.jpg) **Administration** — catalogue management |
+| ![PayDunya checkout](docs/screenshots/09-test-paiement.png) **PayDunya checkout** — sandbox page the user is redirected to | |
 
 ## Features
 
