@@ -26,9 +26,9 @@ export function ResourceCard({ resource }) {
             <Icon className="h-12 w-12 text-muted-foreground/30" />
           </div>
         )}
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-xs font-semibold text-foreground shadow-card">
-          <Icon className="h-3.5 w-3.5 text-primary" />
-          {TYPE_LABELS[resource.type] ?? resource.type}
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-card/95 px-2.5 py-1 text-xs font-semibold text-emerald-700 shadow-card">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          Disponible
         </span>
         {resource.capacity && (
           <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-md bg-foreground/80 px-2 py-1 text-xs font-medium text-white backdrop-blur">
@@ -39,11 +39,17 @@ export function ResourceCard({ resource }) {
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-5">
-        <h3 className="font-display text-lg font-semibold leading-snug">
-          <Link to={`/resources/${resource.id}`} className="hover:text-primary">
-            {resource.name}
-          </Link>
-        </h3>
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="font-display text-lg font-semibold leading-snug">
+            <Link to={`/resources/${resource.id}`} className="hover:text-primary">
+              {resource.name}
+            </Link>
+          </h3>
+          <span className="inline-flex shrink-0 items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+            <Icon className="h-3 w-3" />
+            {TYPE_LABELS[resource.type] ?? resource.type}
+          </span>
+        </div>
         {resource.description && (
           <p className="line-clamp-2 text-sm text-muted-foreground">{resource.description}</p>
         )}
@@ -54,6 +60,7 @@ export function ResourceCard({ resource }) {
           <p className="text-xs text-muted-foreground">Tarif horaire</p>
           <p className="font-display text-xl font-bold text-primary">
             {formatCents(resource.hourly_price_cents)}
+            <span className="text-sm font-medium text-muted-foreground"> / h</span>
           </p>
         </div>
         <Link

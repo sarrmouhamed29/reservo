@@ -20,6 +20,7 @@ Route::prefix('api/v1')->group(function () {
 
     // ── Public ──────────────────────────────────────────────────────────
     Route::get('resources', [ResourceController::class, 'index']);
+    Route::get('resources/{resource}/availability', [ResourceController::class, 'availability']);
     Route::get('resources/{resource}', [ResourceController::class, 'show']);
 
     // ── Guest only ───────────────────────────────────────────────────────

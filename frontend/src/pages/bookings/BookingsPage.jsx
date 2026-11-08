@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CalendarClock, CalendarX, Clock, Timer, Wallet } from 'lucide-react'
+import { CalendarClock, LifeBuoy, CalendarX, Clock, Timer, Wallet } from 'lucide-react'
 import { cancelBooking, createPayDunyaCheckout, listBookings } from '@/api/bookings'
 import { Button } from '@/components/ui/button'
 import {
@@ -74,6 +74,7 @@ export function BookingsPage() {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState('upcoming')
+  const [sort, setSort] = useState('date_desc')
   const [cancelTarget, setCancelTarget] = useState(null)
   const [cancelling, setCancelling] = useState(false)
   const [checkingOut, setCheckingOut] = useState(null)
@@ -94,7 +95,12 @@ export function BookingsPage() {
     const t = tabOf(b, now)
     return { ...acc, [t]: (acc[t] ?? 0) + 1 }
   }, {})
-  const visible = bookings.filter((b) => tabOf(b, now) === tab)
+  const sorters = {
+    date_desc: (a, b) => new Date(b.starts_at) - new Date(a.starts_at),
+    date_asc: (a, b) => new Date(a.starts_at) - new Date(b.starts_at),
+    amount_desc: (a, b) => b.total_price_cents - a.total_price_cents,
+  }
+  const visible = bookings.filter((b) => tabOf(b, now) === tab).sort(sorters[sort])
   const committed = bookings
     .filter((b) => b.status !== 'cancelled')
     .reduce((sum, b) => sum + b.total_price_cents, 0)
@@ -145,6 +151,12 @@ export function BookingsPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-xl">
+          <p className="mb-3 text-sm text-muted-foreground">
+            <span className="rounded bg-primary/10 px-2 py-0.5 font-medium text-primary">
+              Espace membre
+            </span>{' '}
+            / Flux réservations
+          </p>
           <h1 className="font-display text-4xl font-bold tracking-tight">Mes réservations</h1>
           <p className="mt-2 text-lg text-muted-foreground">
             Suivez vos créneaux, réglez ceux en attente, annulez au besoin.
@@ -168,34 +180,48 @@ export function BookingsPage() {
         </div>
       </div>
 
-      <div
-        role="tablist"
-        className="inline-flex gap-1 rounded-lg border border-border bg-card p-1 shadow-card"
-      >
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={tab === t.id}
-            onClick={() => setTab(t.id)}
-            className={cn(
-              'flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              tab === t.id
-                ? 'bg-primary/10 text-primary'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {t.label}
-            <span
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div
+          role="tablist"
+          className="inline-flex gap-1 rounded-lg border border-border bg-card p-1 shadow-card"
+        >
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              role="tab"
+              aria-selected={tab === t.id}
+              onClick={() => setTab(t.id)}
               className={cn(
-                'rounded-full px-2 text-xs',
-                tab === t.id ? 'bg-primary/15' : 'bg-secondary'
+                'flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors',
+                tab === t.id
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              {counts[t.id] ?? 0}
-            </span>
-          </button>
-        ))}
+              {t.label}
+              <span
+                className={cn(
+                  'rounded-full px-2 text-xs',
+                  tab === t.id ? 'bg-primary/15' : 'bg-secondary'
+                )}
+              >
+                {counts[t.id] ?? 0}
+              </span>
+            </button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 text-sm text-muted-foreground">
+          Trier par
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="h-10 rounded-md border border-input bg-card px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-primary/20"
+          >
+            <option value="date_desc">Date (récentes en premier)</option>
+            <option value="date_asc">Date (croissante)</option>
+            <option value="amount_desc">Montant</option>
+          </select>
+        </label>
       </div>
 
       {visible.length === 0 ? (
@@ -235,7 +261,8 @@ export function BookingsPage() {
                     <div>
                       <div className="mb-2 flex flex-wrap items-center gap-2">
                         <span className="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                          Réf. {String(b.id).padStart(5, '0')}
+                          #RES-{new Date(b.created_at ?? b.starts_at).getFullYear()}-
+                          {String(b.id).padStart(3, '0')}
                         </span>
                         <span
                           className={cn(
@@ -294,6 +321,23 @@ export function BookingsPage() {
         </div>
       )}
 
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border bg-secondary/60 p-5">
+        <div className="flex items-center gap-4">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <LifeBuoy className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="font-display text-lg font-semibold">Un imprévu sur un créneau ?</p>
+            <p className="text-sm text-muted-foreground">
+              Écrivez-nous en indiquant la référence de la réservation concernée.
+            </p>
+          </div>
+        </div>
+        <Button asChild>
+          <a href="mailto:support@reservo.test">Contacter le support</a>
+        </Button>
+      </div>
+
       <Dialog
         open={!!cancelTarget}
         onOpenChange={(open) => {
@@ -304,7 +348,14 @@ export function BookingsPage() {
           <DialogHeader>
             <DialogTitle>Annuler cette réservation ?</DialogTitle>
             <DialogDescription>
-              Le créneau sera libéré pour les autres utilisateurs. Cette action est définitive.
+              {cancelTarget && (
+                <>
+                  Vous allez libérer <strong>{cancelTarget.resource?.name}</strong> pour le créneau
+                  du {dayFmt.format(new Date(cancelTarget.starts_at))} (
+                  {timeFmt.format(new Date(cancelTarget.starts_at))} –{' '}
+                  {timeFmt.format(new Date(cancelTarget.ends_at))}). Cette action est définitive.
+                </>
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

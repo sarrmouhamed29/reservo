@@ -12,3 +12,6 @@ export const createResource = (data) =>
 export const updateResource = (id, data) => client.put(`/resources/${id}`, data)
 
 export const deleteResource = (id) => client.delete(`/resources/${id}`)
+
+export const getAvailability = (id, date) =>
+  client.get(`/resources/${id}/availability`, { params: { date } })

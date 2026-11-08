@@ -10,6 +10,7 @@ use App\Http\Requests\Resource\StoreResourceRequest;
 use App\Http\Requests\Resource\UpdateResourceRequest;
 use App\Http\Resources\ResourceResource;
 use App\Models\Resource;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -38,7 +39,46 @@ class ResourceController extends Controller
             }
         }
 
-        return ResourceResource::collection($query->paginate(15));
+        if ($request->filled('capacity_min')) {
+            $query->where('capacity', '>=', (int) $request->query('capacity_min'));
+        }
+
+        if ($request->filled('capacity_max')) {
+            $query->where('capacity', '<=', (int) $request->query('capacity_max'));
+        }
+
+        match ($request->query('sort')) {
+            'price_asc' => $query->orderBy('hourly_price_cents'),
+            'price_desc' => $query->orderByDesc('hourly_price_cents'),
+            'capacity_desc' => $query->orderByRaw('capacity desc nulls last'),
+            default => $query->orderBy('id'),
+        };
+
+        $perPage = min(max((int) $request->query('per_page', 15), 1), 24);
+
+        return ResourceResource::collection($query->paginate($perPage));
+    }
+
+    /** Busy intervals of one resource on one day, without exposing who booked. */
+    public function availability(Request $request, Resource $resource): JsonResponse
+    {
+        $data = $request->validate(['date' => ['required', 'date_format:Y-m-d']]);
+
+        $dayStart = Carbon::parse($data['date'])->startOfDay();
+        $dayEnd = $dayStart->copy()->addDay();
+
+        $busy = $resource->bookings()
+            ->whereIn('status', ['pending', 'paid'])
+            ->where('starts_at', '<', $dayEnd)
+            ->where('ends_at', '>', $dayStart)
+            ->orderBy('starts_at')
+            ->get(['starts_at', 'ends_at'])
+            ->map(fn ($b) => [
+                'starts_at' => $b->starts_at->toIso8601String(),
+                'ends_at' => $b->ends_at->toIso8601String(),
+            ]);
+
+        return response()->json(['data' => $busy]);
     }
 
     public function show(Resource $resource): ResourceResource
