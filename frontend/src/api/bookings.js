@@ -9,3 +9,5 @@ export const createBooking = (data) => client.post('/bookings', data)
 export const cancelBooking = (id) => client.delete(`/bookings/${id}`)
 
 export const createCheckout = (id) => client.post(`/bookings/${id}/checkout`)
+
+export const createPayDunyaCheckout = (id) => client.post(`/bookings/${id}/paydunya-checkout`)

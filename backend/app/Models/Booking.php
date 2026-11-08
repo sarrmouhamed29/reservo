@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $total_price_cents
  * @property string|null $stripe_session_id
  * @property string|null $stripe_payment_intent_id
+ * @property string|null $paydunya_invoice_token
  */
 class Booking extends Model
 {
@@ -38,6 +39,7 @@ class Booking extends Model
         'total_price_cents',
         'stripe_session_id',
         'stripe_payment_intent_id',
+        'paydunya_invoice_token',
         'cancelled_at',
     ];
 

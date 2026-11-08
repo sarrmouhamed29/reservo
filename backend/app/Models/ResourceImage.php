@@ -36,6 +36,10 @@ class ResourceImage extends Model
 
     public function getUrlAttribute(): string
     {
+        if (str_starts_with($this->path, 'http')) {
+            return $this->path;
+        }
+
         return Storage::url($this->path);
     }
 }

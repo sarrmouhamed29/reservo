@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\BookingController;
+use App\Http\Controllers\Api\V1\PayDunya\CheckoutController as PayDunyaCheckoutController;
 use App\Http\Controllers\Api\V1\ResourceController;
 use App\Http\Controllers\Api\V1\Stripe\CheckoutController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -38,6 +39,7 @@ Route::prefix('api/v1')->group(function () {
         Route::get('bookings/{booking}', [BookingController::class, 'show']);
         Route::delete('bookings/{booking}', [BookingController::class, 'destroy']);
         Route::post('bookings/{booking}/checkout', CheckoutController::class);
+        Route::post('bookings/{booking}/paydunya-checkout', PayDunyaCheckoutController::class);
 
         // Resources (admin write operations)
         Route::post('resources', [ResourceController::class, 'store']);

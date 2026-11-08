@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Users, Clock, ArrowLeft, Building2, Wrench } from 'lucide-react'
 import { getResource } from '@/api/resources'
-import { createBooking, createCheckout } from '@/api/bookings'
+import { createBooking, createCheckout, createPayDunyaCheckout } from '@/api/bookings'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
 import { formatCents } from '@/lib/utils'
+import { PaymentMethodSelector } from '@/components/payment/PaymentMethodSelector'
 
 export function ResourceDetailPage() {
   const { id } = useParams()
@@ -22,6 +23,7 @@ export function ResourceDetailPage() {
   const [bookingForm, setBookingForm] = useState({ starts_at: '', ends_at: '' })
   const [bookingErrors, setBookingErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState('paydunya')
 
   useEffect(() => {
     getResource(id)
@@ -40,7 +42,9 @@ export function ResourceDetailPage() {
         starts_at: bookingForm.starts_at,
         ends_at: bookingForm.ends_at,
       })
-      const { data: checkoutData } = await createCheckout(bookingData.data.id)
+      const bookingId = bookingData.data.id
+      const checkout = paymentMethod === 'stripe' ? createCheckout : createPayDunyaCheckout
+      const { data: checkoutData } = await checkout(bookingId)
       window.location.href = checkoutData.checkout_url
     } catch (err) {
       const data = err.response?.data
@@ -125,6 +129,10 @@ export function ResourceDetailPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleBook} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <Label>Mode de paiement</Label>
+                    <PaymentMethodSelector value={paymentMethod} onChange={setPaymentMethod} />
+                  </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="starts_at">Début</Label>
                     <Input

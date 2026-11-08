@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CalendarX, CheckCircle2, Clock, XCircle } from 'lucide-react'
-import { cancelBooking, createCheckout, listBookings } from '@/api/bookings'
+import { cancelBooking, createPayDunyaCheckout, listBookings } from '@/api/bookings'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -48,7 +48,7 @@ export function BookingsPage() {
   const handlePay = async (booking) => {
     setCheckingOut(booking.id)
     try {
-      const { data } = await createCheckout(booking.id)
+      const { data } = await createPayDunyaCheckout(booking.id)
       window.location.href = data.checkout_url
     } catch {
       toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de lancer le paiement.' })

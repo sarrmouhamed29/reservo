@@ -7,19 +7,22 @@ import { Card, CardContent } from '@/components/ui/card'
 
 export function BookingSuccessPage() {
   const [searchParams] = useSearchParams()
-  const sessionId = searchParams.get('session_id')
+  const paydunyaToken = searchParams.get('token')
+  const stripeSessionId = searchParams.get('session_id')
 
   const [booking, setBooking] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!sessionId) { setLoading(false); return }
+    if (!paydunyaToken && !stripeSessionId) { setLoading(false); return }
 
-    // Poll briefly — webhook may take a few seconds to fire
     let attempts = 0
     const poll = async () => {
       try {
-        const { data } = await listBookings({ stripe_session_id: sessionId })
+        const params = paydunyaToken
+          ? { paydunya_invoice_token: paydunyaToken }
+          : { stripe_session_id: stripeSessionId }
+        const { data } = await listBookings(params)
         const found = data.data?.[0]
         if (found) {
           setBooking(found)
@@ -27,11 +30,11 @@ export function BookingSuccessPage() {
           return
         }
       } catch {}
-      if (++attempts < 5) setTimeout(poll, 2000)
+      if (++attempts < 6) setTimeout(poll, 2000)
       else setLoading(false)
     }
     poll()
-  }, [sessionId])
+  }, [paydunyaToken, stripeSessionId])
 
   return (
     <div className="mx-auto max-w-md space-y-6 py-16 text-center">
