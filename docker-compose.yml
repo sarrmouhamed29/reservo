@@ -47,20 +47,22 @@ services:
       - reservo_net
 
   node:
-    image: node:20-alpine
+    image: node:22-alpine
     profiles: ["dev"]
     working_dir: /app
     volumes:
       - ./frontend:/app
+      - node_modules:/app/node_modules
     ports:
       - "5173:5173"
     networks:
       - reservo_net
-    command: sh -c "npm install && npm run dev -- --host"
+    command: sh -c "npm install --prefer-dedupe && npm run dev -- --host"
 
 volumes:
   pgdata:
   frontend_dist:
+  node_modules:
 
 networks:
   reservo_net:

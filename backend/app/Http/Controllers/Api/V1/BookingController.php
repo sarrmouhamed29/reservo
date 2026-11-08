@@ -19,10 +19,17 @@ class BookingController extends Controller
     {
         $this->authorize('viewAny', Booking::class);
 
-        $bookings = Booking::with('resource.images')
-            ->where('user_id', $request->user()->id)
-            ->latest()
-            ->paginate(15);
+        $query = Booking::with('resource.images')
+            ->where('user_id', $request->user()->id);
+
+        // Used by the payment return page to find the booking behind a checkout.
+        foreach (['paydunya_invoice_token', 'stripe_session_id'] as $filter) {
+            if ($request->filled($filter)) {
+                $query->where($filter, $request->string($filter)->toString());
+            }
+        }
+
+        $bookings = $query->latest()->paginate(15);
 
         return BookingResource::collection($bookings);
     }
