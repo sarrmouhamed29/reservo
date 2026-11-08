@@ -18,9 +18,9 @@ class ResourceSeeder extends Seeder
 
         foreach ($rooms as $room) {
             Resource::create(array_merge($room, [
-                'type'        => 'room',
+                'type' => 'room',
                 'description' => 'Espace de travail entièrement équipé avec projecteur et tableau blanc.',
-                'is_active'   => true,
+                'is_active' => true,
             ]));
         }
 
@@ -32,10 +32,10 @@ class ResourceSeeder extends Seeder
 
         foreach ($equipment as $item) {
             Resource::create(array_merge($item, [
-                'type'        => 'equipment',
+                'type' => 'equipment',
                 'description' => 'Matériel professionnel disponible à la location.',
-                'capacity'    => null,
-                'is_active'   => true,
+                'capacity' => null,
+                'is_active' => true,
             ]));
         }
     }

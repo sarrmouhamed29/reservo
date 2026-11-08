@@ -10,16 +10,16 @@ class ResourceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'                 => $this->id,
-            'name'               => $this->name,
-            'type'               => $this->type->value,
-            'description'        => $this->description,
-            'capacity'           => $this->capacity,
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type->value,
+            'description' => $this->description,
+            'capacity' => $this->capacity,
             'hourly_price_cents' => $this->hourly_price_cents,
-            'is_active'          => $this->is_active,
-            'images'             => ResourceImageResource::collection($this->whenLoaded('images')),
-            'created_at'         => $this->created_at?->toIso8601String(),
-            'updated_at'         => $this->updated_at?->toIso8601String(),
+            'is_active' => $this->is_active,
+            'images' => ResourceImageResource::collection($this->whenLoaded('images')),
+            'created_at' => $this->created_at?->toIso8601String(),
+            'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }
 }

@@ -10,7 +10,7 @@ class CancelBookingAction
     public function execute(Booking $booking): Booking
     {
         $booking->update([
-            'status'       => BookingStatus::Cancelled,
+            'status' => BookingStatus::Cancelled,
             'cancelled_at' => now(),
         ]);
 

@@ -17,8 +17,8 @@ class StoreBookingRequest extends FormRequest
     {
         return [
             'resource_id' => ['required', 'integer', 'exists:resources,id'],
-            'starts_at'   => ['required', 'date', 'after:now'],
-            'ends_at'     => ['required', 'date', 'after:starts_at'],
+            'starts_at' => ['required', 'date', 'after:now'],
+            'ends_at' => ['required', 'date', 'after:starts_at'],
         ];
     }
 
@@ -30,7 +30,7 @@ class StoreBookingRequest extends FormRequest
             }
 
             $resource = Resource::find($this->input('resource_id'));
-            if ($resource && !$resource->is_active) {
+            if ($resource && ! $resource->is_active) {
                 $validator->errors()->add('resource_id', 'This resource is not available for booking.');
             }
         });

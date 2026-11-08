@@ -18,8 +18,8 @@ class CreateStripeCheckoutAction
         $session = Session::create([
             'line_items' => [[
                 'price_data' => [
-                    'currency'     => 'eur',
-                    'unit_amount'  => $booking->total_price_cents,
+                    'currency' => 'eur',
+                    'unit_amount' => $booking->total_price_cents,
                     'product_data' => [
                         'name' => "Réservation : {$resource->name}",
                         'description' => sprintf(
@@ -31,10 +31,10 @@ class CreateStripeCheckoutAction
                 ],
                 'quantity' => 1,
             ]],
-            'mode'        => 'payment',
+            'mode' => 'payment',
             'success_url' => "{$frontendUrl}/bookings/success?session_id={CHECKOUT_SESSION_ID}",
-            'cancel_url'  => "{$frontendUrl}/bookings",
-            'metadata'    => [
+            'cancel_url' => "{$frontendUrl}/bookings",
+            'metadata' => [
                 'booking_id' => $booking->id,
             ],
         ]);

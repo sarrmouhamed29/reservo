@@ -32,8 +32,8 @@ class ResourceController extends Controller
             if ($to = $request->query('available_to')) {
                 $query->whereDoesntHave('bookings', function ($q) use ($from, $to) {
                     $q->whereIn('status', ['pending', 'paid'])
-                      ->where('starts_at', '<', $to)
-                      ->where('ends_at', '>', $from);
+                        ->where('starts_at', '<', $to)
+                        ->where('ends_at', '>', $from);
                 });
             }
         }

@@ -10,12 +10,12 @@ class ResourceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'               => fake()->words(3, true),
-            'type'               => fake()->randomElement(ResourceType::cases())->value,
-            'description'        => fake()->paragraph(),
-            'capacity'           => fake()->optional()->numberBetween(2, 50),
+            'name' => fake()->words(3, true),
+            'type' => fake()->randomElement(ResourceType::cases())->value,
+            'description' => fake()->paragraph(),
+            'capacity' => fake()->optional()->numberBetween(2, 50),
             'hourly_price_cents' => fake()->numberBetween(1000, 20000),
-            'is_active'          => true,
+            'is_active' => true,
         ];
     }
 

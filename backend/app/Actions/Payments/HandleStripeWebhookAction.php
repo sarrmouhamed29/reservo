@@ -18,13 +18,13 @@ class HandleStripeWebhookAction
 
         $booking = Booking::where('stripe_session_id', $session->id)->first();
 
-        if (!$booking || $booking->status === BookingStatus::Paid) {
+        if (! $booking || $booking->status === BookingStatus::Paid) {
             return; // Idempotent — already processed or booking not found
         }
 
         $booking->update([
-            'status'                    => BookingStatus::Paid,
-            'stripe_payment_intent_id'  => $session->payment_intent,
+            'status' => BookingStatus::Paid,
+            'stripe_payment_intent_id' => $session->payment_intent,
         ]);
     }
 }

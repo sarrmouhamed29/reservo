@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\BookingStatus;
 use App\Models\Booking;
 use App\Models\User;
 
