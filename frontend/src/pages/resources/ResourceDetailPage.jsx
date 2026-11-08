@@ -54,7 +54,10 @@ export function ResourceDetailPage() {
   const [resource, setResource] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState(0)
-  const [day, setDay] = useState(today)
+  // Start on tomorrow once today's last slot (18:00) has begun.
+  const [day, setDay] = useState(() =>
+    new Date().getUTCHours() >= HOURS[HOURS.length - 1] ? addDays(today, 1) : today
+  )
   const [busy, setBusy] = useState([])
   const [range, setRange] = useState(null) // { from, to }: first and last selected start hours
   const [bookingErrors, setBookingErrors] = useState({})
