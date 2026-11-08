@@ -14,7 +14,7 @@ class ResourceFactory extends Factory
             'type' => fake()->randomElement(ResourceType::cases())->value,
             'description' => fake()->paragraph(),
             'capacity' => fake()->optional()->numberBetween(2, 50),
-            'hourly_price_cents' => fake()->numberBetween(1000, 20000),
+            'hourly_price' => fake()->numberBetween(2000, 50000),
             'is_active' => true,
         ];
     }

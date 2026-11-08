@@ -24,7 +24,7 @@ export function AdminResourceFormPage() {
     type: 'room',
     description: '',
     capacity: '',
-    hourly_price_cents: '',
+    hourly_price: '',
     is_active: true,
   })
   const [errors, setErrors] = useState({})
@@ -41,7 +41,7 @@ export function AdminResourceFormPage() {
           type: r.type,
           description: r.description ?? '',
           capacity: r.capacity ?? '',
-          hourly_price_cents: r.hourly_price_cents,
+          hourly_price: r.hourly_price,
           is_active: r.is_active,
         })
       })
@@ -60,7 +60,7 @@ export function AdminResourceFormPage() {
     const payload = {
       ...form,
       capacity: form.capacity ? parseInt(form.capacity) : null,
-      hourly_price_cents: parseInt(form.hourly_price_cents),
+      hourly_price: parseInt(form.hourly_price),
     }
     try {
       if (isEdit) {
@@ -159,23 +159,18 @@ export function AdminResourceFormPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="hourly_price_cents">Prix par heure (en centimes)</Label>
+              <Label htmlFor="hourly_price">Prix par heure (F CFA)</Label>
               <Input
-                id="hourly_price_cents"
-                name="hourly_price_cents"
+                id="hourly_price"
+                name="hourly_price"
                 type="number"
                 min="0"
-                value={form.hourly_price_cents}
+                value={form.hourly_price}
                 onChange={handleChange}
-                placeholder="5000 = 50,00 €"
+                placeholder="25000"
               />
-              {errors.hourly_price_cents && (
-                <p className="text-xs text-destructive">{errors.hourly_price_cents[0]}</p>
-              )}
-              {form.hourly_price_cents && (
-                <p className="text-xs text-muted-foreground">
-                  Soit {(parseInt(form.hourly_price_cents) / 100).toFixed(2)} € / heure
-                </p>
+              {errors.hourly_price && (
+                <p className="text-xs text-destructive">{errors.hourly_price[0]}</p>
               )}
             </div>
 

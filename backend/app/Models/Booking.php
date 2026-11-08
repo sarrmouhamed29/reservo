@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $ends_at
  * @property Carbon|null $cancelled_at
  * @property BookingStatus $status
- * @property int $total_price_cents
+ * @property int $total_price
  * @property string|null $stripe_session_id
  * @property string|null $stripe_payment_intent_id
  * @property string|null $paydunya_invoice_token
@@ -36,7 +36,7 @@ class Booking extends Model
         'starts_at',
         'ends_at',
         'status',
-        'total_price_cents',
+        'total_price',
         'stripe_session_id',
         'stripe_payment_intent_id',
         'paydunya_invoice_token',
@@ -50,7 +50,7 @@ class Booking extends Model
             'ends_at' => 'datetime',
             'cancelled_at' => 'datetime',
             'status' => BookingStatus::class,
-            'total_price_cents' => 'integer',
+            'total_price' => 'integer',
         ];
     }
 

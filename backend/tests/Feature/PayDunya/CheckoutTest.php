@@ -32,7 +32,8 @@ test('owner gets a paydunya checkout url and the invoice token is stored', funct
 
     expect($booking->fresh()->paydunya_invoice_token)->toBe('inv_123');
     Http::assertSent(fn ($request) => str_contains($request->url(), '/sandbox-api/')
-        && $request->hasHeader('PAYDUNYA-MASTER-KEY', 'master'));
+        && $request->hasHeader('PAYDUNYA-MASTER-KEY', 'master')
+        && $request['invoice']['total_amount'] === $booking->total_price);
 });
 
 test('live mode calls the production api', function () {

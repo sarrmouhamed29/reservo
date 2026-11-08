@@ -18,8 +18,8 @@ class CreateStripeCheckoutAction
         $session = Session::create([
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'eur',
-                    'unit_amount' => $booking->total_price_cents,
+                    'currency' => 'xof',
+                    'unit_amount' => $booking->total_price,
                     'product_data' => [
                         'name' => "Réservation : {$resource->name}",
                         'description' => sprintf(

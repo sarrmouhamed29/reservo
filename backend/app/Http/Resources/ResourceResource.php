@@ -17,7 +17,7 @@ class ResourceResource extends JsonResource
             'type' => $this->resource->type->value,
             'description' => $this->resource->description,
             'capacity' => $this->resource->capacity,
-            'hourly_price_cents' => $this->resource->hourly_price_cents,
+            'hourly_price' => $this->resource->hourly_price,
             'is_active' => $this->resource->is_active,
             'images' => ResourceImageResource::collection($this->whenLoaded('images')),
             'created_at' => $this->resource->created_at?->toIso8601String(),

@@ -21,7 +21,7 @@ class StoreResourceRequest extends FormRequest
             'type' => ['required', new Enum(ResourceType::class)],
             'description' => ['nullable', 'string', 'max:5000'],
             'capacity' => ['nullable', 'integer', 'min:1', 'max:10000'],
-            'hourly_price_cents' => ['required', 'integer', 'min:0'],
+            'hourly_price' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'images' => ['nullable', 'array', 'max:10'],
             'images.*' => ['image', 'mimes:jpeg,png,webp', 'max:4096'],

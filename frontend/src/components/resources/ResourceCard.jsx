@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Building2, Users, Wrench } from 'lucide-react'
-import { formatCents } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 
 const TYPE_LABELS = { room: 'Salle', equipment: 'Matériel' }
 
@@ -55,17 +55,17 @@ export function ResourceCard({ resource }) {
         )}
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-border bg-background/60 px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-background/60 px-5 py-4">
         <div>
           <p className="text-xs text-muted-foreground">Tarif horaire</p>
-          <p className="font-display text-xl font-bold text-primary">
-            {formatCents(resource.hourly_price_cents)}
+          <p className="whitespace-nowrap font-display text-xl font-bold text-primary">
+            {formatPrice(resource.hourly_price)}
             <span className="text-sm font-medium text-muted-foreground"> / h</span>
           </p>
         </div>
         <Link
           to={`/resources/${resource.id}`}
-          className="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[#0043A6]"
+          className="inline-flex h-9 min-w-[10.5rem] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[#0043A6]"
         >
           Réserver un créneau
           <ArrowRight className="h-4 w-4" />

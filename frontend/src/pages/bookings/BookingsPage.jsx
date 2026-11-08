@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { toast } from '@/hooks/use-toast'
-import { cn, formatCents } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 
 const STATUS = {
   pending: {
@@ -98,12 +98,12 @@ export function BookingsPage() {
   const sorters = {
     date_desc: (a, b) => new Date(b.starts_at) - new Date(a.starts_at),
     date_asc: (a, b) => new Date(a.starts_at) - new Date(b.starts_at),
-    amount_desc: (a, b) => b.total_price_cents - a.total_price_cents,
+    amount_desc: (a, b) => b.total_price - a.total_price,
   }
   const visible = bookings.filter((b) => tabOf(b, now) === tab).sort(sorters[sort])
   const committed = bookings
     .filter((b) => b.status !== 'cancelled')
-    .reduce((sum, b) => sum + b.total_price_cents, 0)
+    .reduce((sum, b) => sum + b.total_price, 0)
 
   const handleCancel = async () => {
     if (!cancelTarget) return
@@ -174,7 +174,7 @@ export function BookingsPage() {
             <Wallet className="h-5 w-5 text-emerald-600" />
             <div>
               <p className="text-xs text-muted-foreground">Engagé</p>
-              <p className="font-display text-xl font-bold">{formatCents(committed)}</p>
+              <p className="font-display text-xl font-bold">{formatPrice(committed)}</p>
             </div>
           </div>
         </div>
@@ -278,9 +278,7 @@ export function BookingsPage() {
                         {b.resource?.name ?? `Ressource #${b.resource_id}`}
                       </h2>
                     </div>
-                    <p className="font-display text-2xl font-bold">
-                      {formatCents(b.total_price_cents)}
-                    </p>
+                    <p className="font-display text-2xl font-bold">{formatPrice(b.total_price)}</p>
                   </div>
 
                   <div className="grid gap-4 rounded-lg border border-border bg-background p-4 sm:grid-cols-3">

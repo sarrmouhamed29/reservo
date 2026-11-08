@@ -17,7 +17,7 @@ class CreateResourceAction
                 'type' => $data['type'],
                 'description' => $data['description'] ?? null,
                 'capacity' => $data['capacity'] ?? null,
-                'hourly_price_cents' => $data['hourly_price_cents'],
+                'hourly_price' => $data['hourly_price'],
                 'is_active' => $data['is_active'] ?? true,
             ]);
 

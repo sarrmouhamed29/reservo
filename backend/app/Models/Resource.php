@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property ResourceType $type
  * @property string|null $description
  * @property int|null $capacity
- * @property int $hourly_price_cents
+ * @property int $hourly_price
  * @property bool $is_active
  */
 class Resource extends Model
@@ -30,7 +30,7 @@ class Resource extends Model
         'type',
         'description',
         'capacity',
-        'hourly_price_cents',
+        'hourly_price',
         'is_active',
     ];
 
@@ -39,7 +39,7 @@ class Resource extends Model
         return [
             'type' => ResourceType::class,
             'is_active' => 'boolean',
-            'hourly_price_cents' => 'integer',
+            'hourly_price' => 'integer',
             'capacity' => 'integer',
         ];
     }

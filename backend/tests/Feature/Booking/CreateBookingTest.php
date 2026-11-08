@@ -5,7 +5,7 @@ use App\Models\User;
 
 test('authenticated user can create a booking', function () {
     $user = User::factory()->create();
-    $resource = Resource::factory()->create(['hourly_price_cents' => 5000, 'is_active' => true]);
+    $resource = Resource::factory()->create(['hourly_price' => 5000, 'is_active' => true]);
 
     $this->actingAs($user)
         ->postJson('/api/v1/bookings', [
@@ -14,7 +14,7 @@ test('authenticated user can create a booking', function () {
             'ends_at' => '2026-12-01T11:00:00Z',
         ])
         ->assertCreated()
-        ->assertJsonPath('data.total_price_cents', 10000);
+        ->assertJsonPath('data.total_price', 10000);
 });
 
 test('guest cannot create a booking', function () {

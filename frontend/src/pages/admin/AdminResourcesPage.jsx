@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { toast } from '@/hooks/use-toast'
-import { formatCents } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 
 export function AdminResourcesPage() {
   const [resources, setResources] = useState([])
@@ -89,7 +89,7 @@ export function AdminResourcesPage() {
                   <td className="px-4 py-3">
                     <Badge variant="secondary">{r.type === 'room' ? 'Salle' : 'Matériel'}</Badge>
                   </td>
-                  <td className="px-4 py-3">{formatCents(r.hourly_price_cents)}</td>
+                  <td className="px-4 py-3">{formatPrice(r.hourly_price)}</td>
                   <td className="px-4 py-3">
                     <Badge variant={r.is_active ? 'success' : 'secondary'}>
                       {r.is_active ? 'Actif' : 'Inactif'}

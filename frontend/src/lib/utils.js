@@ -5,11 +5,10 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCents(cents) {
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(cents / 100)
+/** Amounts are whole F CFA (XOF has no minor unit). */
+export function formatPrice(amount) {
+  const value = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(amount)
+  return `${value} F CFA`
 }
 
 export function formatDate(isoString) {

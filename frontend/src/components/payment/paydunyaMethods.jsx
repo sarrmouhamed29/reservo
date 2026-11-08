@@ -3,37 +3,13 @@ export const PAYDUNYA_METHODS = [
     id: 'orange_money',
     label: 'Orange Money',
     color: '#FF7900',
-    logo: (
-      <svg viewBox="0 0 48 48" fill="none" className="h-6 w-6">
-        <circle cx="24" cy="24" r="24" fill="#FF7900" />
-        <circle cx="24" cy="24" r="13" fill="white" />
-        <circle cx="24" cy="24" r="7" fill="#FF7900" />
-      </svg>
-    ),
+    logo: <img src="/payments/om.png" alt="" className="h-6 w-6 rounded object-contain" />,
   },
   {
     id: 'wave',
     label: 'Wave',
     color: '#1DC8EE',
-    logo: (
-      <svg viewBox="0 0 48 48" fill="none" className="h-6 w-6">
-        <circle cx="24" cy="24" r="24" fill="#1DC8EE" />
-        <path
-          d="M12 20c3 0 5 4 7 4s4-4 7-4 5 4 7 4"
-          stroke="white"
-          strokeWidth="3"
-          strokeLinecap="round"
-          fill="none"
-        />
-        <path
-          d="M14 28c3 0 5-4 7-4s4 4 7 4 5-4 7-4"
-          stroke="white"
-          strokeWidth="3"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </svg>
-    ),
+    logo: <img src="/payments/wave.png" alt="" className="h-6 w-6 rounded object-contain" />,
   },
   {
     id: 'free_money',
@@ -60,22 +36,7 @@ export const PAYDUNYA_METHODS = [
     id: 'djamo',
     label: 'Djamo',
     color: '#7B2FBE',
-    logo: (
-      <svg viewBox="0 0 48 48" fill="none" className="h-6 w-6">
-        <circle cx="24" cy="24" r="24" fill="#7B2FBE" />
-        <text
-          x="24"
-          y="30"
-          textAnchor="middle"
-          fill="white"
-          fontSize="14"
-          fontWeight="bold"
-          fontFamily="sans-serif"
-        >
-          DJ
-        </text>
-      </svg>
-    ),
+    logo: <img src="/payments/djamo.png" alt="" className="h-6 w-6 rounded object-contain" />,
   },
   {
     id: 'expresso',

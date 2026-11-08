@@ -21,7 +21,7 @@ class UpdateResourceRequest extends FormRequest
             'type' => ['sometimes', new Enum(ResourceType::class)],
             'description' => ['nullable', 'string', 'max:5000'],
             'capacity' => ['nullable', 'integer', 'min:1', 'max:10000'],
-            'hourly_price_cents' => ['sometimes', 'integer', 'min:0'],
+            'hourly_price' => ['sometimes', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
         ];
     }

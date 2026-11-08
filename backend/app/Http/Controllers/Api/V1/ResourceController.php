@@ -48,8 +48,8 @@ class ResourceController extends Controller
         }
 
         match ($request->query('sort')) {
-            'price_asc' => $query->orderBy('hourly_price_cents'),
-            'price_desc' => $query->orderByDesc('hourly_price_cents'),
+            'price_asc' => $query->orderBy('hourly_price'),
+            'price_desc' => $query->orderByDesc('hourly_price'),
             'capacity_desc' => $query->orderByRaw('capacity desc nulls last'),
             default => $query->orderBy('id'),
         };

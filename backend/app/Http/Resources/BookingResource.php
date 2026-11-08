@@ -19,7 +19,7 @@ class BookingResource extends JsonResource
             'starts_at' => $this->resource->starts_at->toIso8601String(),
             'ends_at' => $this->resource->ends_at->toIso8601String(),
             'status' => $this->resource->status->value,
-            'total_price_cents' => $this->resource->total_price_cents,
+            'total_price' => $this->resource->total_price,
             'stripe_session_id' => $this->resource->stripe_session_id,
             'cancelled_at' => $this->resource->cancelled_at?->toIso8601String(),
             'created_at' => $this->resource->created_at?->toIso8601String(),

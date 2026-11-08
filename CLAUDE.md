@@ -56,7 +56,7 @@ cd frontend && npm run dev
 - **API Resources** (`app/Http/Resources/`) shape JSON responses; never return Eloquent models directly.
 - **Policies** (`app/Policies/`) enforce authorization; every endpoint calls a Policy method explicitly.
 - **Enums** (`app/Enums/`) represent statuses (e.g. `BookingStatus`, `PaymentStatus`).
-- Monetary amounts are stored in **centimes (integer)**; never floats.
+- Monetary amounts are stored as **whole F CFA (integer, XOF has no minor unit)** in `hourly_price` / `total_price`; never floats.
 - All timestamps are `timestamptz`.
 
 ### Booking conflict prevention

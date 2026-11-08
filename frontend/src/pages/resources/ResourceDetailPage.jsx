@@ -16,7 +16,7 @@ import { createBooking, createCheckout, createPayDunyaCheckout } from '@/api/boo
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/hooks/use-toast'
-import { cn, formatCents } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { PaymentMethodSelector } from '@/components/payment/PaymentMethodSelector'
 
 // Hourly slots offered in the picker (start hours, 08:00 to 19:00).
@@ -100,7 +100,7 @@ export function ResourceDetailPage() {
   const freeCount = HOURS.filter((h) => ['free', 'picked'].includes(slotState(h))).length
   const hours = range ? range.to - range.from + 1 : 0
   const total = useMemo(
-    () => (resource ? Math.round(resource.hourly_price_cents * hours) : 0),
+    () => (resource ? Math.round(resource.hourly_price * hours) : 0),
     [resource, hours]
   )
   const week = Array.from({ length: 7 }, (_, i) => addDays(weekStart(day), i))
@@ -266,7 +266,7 @@ export function ResourceDetailPage() {
                 </div>
                 <p className="text-right">
                   <span className="font-display text-2xl font-bold text-primary">
-                    {formatCents(resource.hourly_price_cents)}
+                    {formatPrice(resource.hourly_price)}
                   </span>
                   <span className="block text-xs text-muted-foreground">par heure</span>
                 </p>
@@ -416,12 +416,12 @@ export function ResourceDetailPage() {
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">Taux horaire</dt>
-                  <dd className="font-medium">{formatCents(resource.hourly_price_cents)}</dd>
+                  <dd className="font-medium">{formatPrice(resource.hourly_price)}</dd>
                 </div>
                 <div className="flex items-center justify-between border-t border-border pt-2">
                   <dt className="font-semibold">Total</dt>
                   <dd className="font-display text-xl font-bold text-primary">
-                    {hours ? formatCents(total) : '—'}
+                    {hours ? formatPrice(total) : '—'}
                   </dd>
                 </div>
               </dl>

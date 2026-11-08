@@ -41,7 +41,7 @@ function SlotPreview() {
           <p className="font-display text-lg font-semibold">Salle Conférence A</p>
         </div>
         <p className="text-right">
-          <span className="font-display text-xl font-bold text-primary">50,00 €</span>
+          <span className="font-display text-xl font-bold text-primary">25 000 F CFA</span>
           <span className="block text-xs text-muted-foreground">par heure</span>
         </p>
       </div>
@@ -66,7 +66,7 @@ function SlotPreview() {
       </ul>
       <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
         <span className="text-sm text-muted-foreground">2 heures</span>
-        <span className="font-display text-lg font-bold">100,00 €</span>
+        <span className="font-display text-lg font-bold">50 000 F CFA</span>
       </div>
     </div>
   )

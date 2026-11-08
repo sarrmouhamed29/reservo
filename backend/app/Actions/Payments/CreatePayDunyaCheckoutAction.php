@@ -26,7 +26,7 @@ class CreatePayDunyaCheckoutAction
             'Content-Type' => 'application/json',
         ])->post("{$baseUrl}/checkout-invoice/create", [
             'invoice' => [
-                'total_amount' => (int) round($booking->total_price_cents / 100),
+                'total_amount' => (int) $booking->total_price,
                 'description' => sprintf(
                     'Réservation : %s — %s → %s',
                     $resource->name,

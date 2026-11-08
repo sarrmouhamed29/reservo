@@ -26,7 +26,7 @@ test('admin can create a resource', function () {
         ->postJson('/api/v1/resources', [
             'name' => 'Salle B',
             'type' => 'room',
-            'hourly_price_cents' => 3000,
+            'hourly_price' => 3000,
             'is_active' => true,
         ])
         ->assertCreated()
@@ -40,7 +40,7 @@ test('regular user cannot create a resource', function () {
         ->postJson('/api/v1/resources', [
             'name' => 'Salle C',
             'type' => 'room',
-            'hourly_price_cents' => 3000,
+            'hourly_price' => 3000,
             'is_active' => true,
         ])
         ->assertForbidden();
@@ -54,7 +54,7 @@ test('admin can update a resource', function () {
         ->putJson("/api/v1/resources/{$resource->id}", [
             'name' => 'Updated Name',
             'type' => $resource->type->value,
-            'hourly_price_cents' => $resource->hourly_price_cents,
+            'hourly_price' => $resource->hourly_price,
             'is_active' => $resource->is_active,
         ])
         ->assertOk()

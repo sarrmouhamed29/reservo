@@ -20,7 +20,7 @@ class BookingFactory extends Factory
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
             'status' => BookingStatus::Pending->value,
-            'total_price_cents' => fake()->numberBetween(1000, 50000),
+            'total_price' => fake()->numberBetween(5000, 150000),
         ];
     }
 

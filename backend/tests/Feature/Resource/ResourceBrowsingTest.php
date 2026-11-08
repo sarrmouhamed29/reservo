@@ -5,9 +5,9 @@ use App\Models\Booking;
 use App\Models\Resource;
 
 test('resources can be sorted by price', function () {
-    Resource::factory()->create(['name' => 'Mid', 'hourly_price_cents' => 3000]);
-    Resource::factory()->create(['name' => 'Cheap', 'hourly_price_cents' => 1000]);
-    Resource::factory()->create(['name' => 'Dear', 'hourly_price_cents' => 9000]);
+    Resource::factory()->create(['name' => 'Mid', 'hourly_price' => 3000]);
+    Resource::factory()->create(['name' => 'Cheap', 'hourly_price' => 1000]);
+    Resource::factory()->create(['name' => 'Dear', 'hourly_price' => 9000]);
 
     $this->getJson('/api/v1/resources?sort=price_asc')
         ->assertOk()
