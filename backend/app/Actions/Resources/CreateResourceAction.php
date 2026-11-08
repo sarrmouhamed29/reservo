@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateResourceAction
 {
+    /** @param array<string, mixed> $data */
     public function execute(array $data): Resource
     {
         return DB::transaction(function () use ($data) {

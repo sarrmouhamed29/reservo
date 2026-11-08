@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateBookingAction
 {
+    /** @param array<string, mixed> $data */
     public function execute(User $user, array $data): Booking
     {
         $resource = Resource::findOrFail($data['resource_id']);

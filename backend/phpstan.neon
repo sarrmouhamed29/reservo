@@ -6,5 +6,4 @@ parameters:
         - app
     level: 6
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder#'
-        - '#Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Builder#'
+        - '#Access to an undefined property Stripe\\StripeObject::\$object#'

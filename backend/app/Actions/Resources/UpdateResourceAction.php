@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateResourceAction
 {
+    /** @param array<string, mixed> $data */
     public function execute(Resource $resource, array $data): Resource
     {
         return DB::transaction(function () use ($resource, $data) {

@@ -2,25 +2,28 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @property Booking $resource */
 class BookingResource extends JsonResource
 {
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'user_id' => $this->user_id,
+            'id' => $this->resource->id,
+            'user_id' => $this->resource->user_id,
             'resource' => new ResourceResource($this->whenLoaded('resource')),
-            'starts_at' => $this->starts_at?->toIso8601String(),
-            'ends_at' => $this->ends_at?->toIso8601String(),
-            'status' => $this->status->value,
-            'total_price_cents' => $this->total_price_cents,
-            'stripe_session_id' => $this->stripe_session_id,
-            'cancelled_at' => $this->cancelled_at?->toIso8601String(),
-            'created_at' => $this->created_at?->toIso8601String(),
-            'updated_at' => $this->updated_at?->toIso8601String(),
+            'starts_at' => $this->resource->starts_at->toIso8601String(),
+            'ends_at' => $this->resource->ends_at->toIso8601String(),
+            'status' => $this->resource->status->value,
+            'total_price_cents' => $this->resource->total_price_cents,
+            'stripe_session_id' => $this->resource->stripe_session_id,
+            'cancelled_at' => $this->resource->cancelled_at?->toIso8601String(),
+            'created_at' => $this->resource->created_at?->toIso8601String(),
+            'updated_at' => $this->resource->updated_at?->toIso8601String(),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ResourceImage extends Model
 {
+    /** @use HasFactory<Factory<ResourceImage>> */
     use HasFactory;
 
     protected $fillable = [
@@ -26,6 +28,7 @@ class ResourceImage extends Model
         ];
     }
 
+    /** @return BelongsTo<\App\Models\Resource, $this> */
     public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
