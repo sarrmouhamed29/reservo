@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-const BASE = 'http://localhost/api/v1'
+const BASE = '/api/v1'
 
 export const handlers = [
   http.get(`${BASE}/resources`, () => {
@@ -36,7 +36,7 @@ export const handlers = [
     })
   }),
 
-  http.get('http://localhost/sanctum/csrf-cookie', () => {
+  http.get('/sanctum/csrf-cookie', () => {
     return new HttpResponse(null, { status: 204 })
   }),
 

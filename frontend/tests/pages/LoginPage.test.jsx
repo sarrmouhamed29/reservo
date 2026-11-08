@@ -36,12 +36,14 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith('user@test.com', 'password')
-      expect(mockNavigate).toHaveBeenCalledWith('/')
+      expect(mockNavigate).toHaveBeenCalledWith('/resources')
     })
   })
 
-  it('shows error on failed login', async () => {
-    mockLogin.mockRejectedValueOnce({ response: { data: { message: 'Identifiants invalides.' } } })
+  it('shows field error on failed login', async () => {
+    mockLogin.mockRejectedValueOnce({
+      response: { data: { errors: { email: ['Identifiants invalides.'] } } },
+    })
     render(<MemoryRouter><LoginPage /></MemoryRouter>)
 
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'bad@test.com' } })

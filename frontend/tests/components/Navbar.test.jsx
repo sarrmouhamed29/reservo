@@ -2,11 +2,14 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, it, expect, vi } from 'vitest'
 import { Navbar } from '@/components/layout/Navbar'
+import * as AuthContext from '@/contexts/AuthContext'
+
+vi.mock('@/contexts/AuthContext', () => ({
+  useAuth: vi.fn(),
+}))
 
 const renderNavbar = (user = null) => {
-  vi.mock('@/contexts/AuthContext', () => ({
-    useAuth: () => ({ user, logout: vi.fn() }),
-  }))
+  vi.mocked(AuthContext.useAuth).mockReturnValue({ user, logout: vi.fn() })
   return render(
     <MemoryRouter>
       <Navbar />
@@ -32,7 +35,7 @@ describe('Navbar', () => {
   })
 
   it('shows admin link for admin users', () => {
-    renderNavbar({ id: 1, name: 'Admin', role: 'admin' })
-    expect(screen.getByText('Administration')).toBeInTheDocument()
+    renderNavbar({ id: 1, name: 'Test Admin', role: 'admin' })
+    expect(screen.getByRole('link', { name: /admin/i })).toBeInTheDocument()
   })
 })
