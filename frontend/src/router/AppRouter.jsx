@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { LandingPage } from '@/pages/LandingPage'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { AuthLayout } from '@/components/layout/AuthLayout'
@@ -25,9 +26,13 @@ export function AppRouter() {
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
+          {/* Landing (full-bleed) */}
+          <Route element={<AppLayout bare />}>
+            <Route index element={<LandingPage />} />
+          </Route>
+
           {/* App routes */}
           <Route element={<AppLayout />}>
-            <Route index element={<Navigate to="/resources" replace />} />
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/resources/:id" element={<ResourceDetailPage />} />
 

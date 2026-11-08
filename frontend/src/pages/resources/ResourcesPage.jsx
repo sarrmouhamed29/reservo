@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Search, SlidersHorizontal } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search, SlidersHorizontal } from 'lucide-react'
 import { listResources } from '@/api/resources'
 import { ResourceCard } from '@/components/resources/ResourceCard'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
+
+const TYPES = [
+  { value: '', label: 'Toutes les ressources' },
+  { value: 'room', label: 'Salles de réunion' },
+  { value: 'equipment', label: 'Matériel' },
+]
 
 export function ResourcesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -21,7 +26,7 @@ export function ResourcesPage() {
     const next = new URLSearchParams(searchParams)
     if (value) next.set(key, value)
     else next.delete(key)
-    next.delete('page')
+    if (key !== 'page') next.delete('page')
     setSearchParams(next)
   }
 
@@ -36,20 +41,39 @@ export function ResourcesPage() {
   }, [name, type, page])
 
   return (
-    <div className="space-y-6">
-      {/* Page header */}
-      <div>
-        <h1 className="font-display text-3xl font-bold tracking-tight">Ressources disponibles</h1>
-        <p className="mt-1 text-muted-foreground">Salles de réunion et matériel à réserver.</p>
+    <div className="space-y-8">
+      <div className="max-w-2xl">
+        <h1 className="font-display text-4xl font-bold tracking-tight">Catalogue des ressources</h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          Salles de réunion et matériel professionnel. Choisissez, vérifiez les créneaux libres, réservez.
+        </p>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-48">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 shadow-card lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer par type">
+          {TYPES.map((t) => (
+            <button
+              key={t.value}
+              type="button"
+              aria-pressed={type === t.value}
+              onClick={() => setParam('type', t.value)}
+              className={cn(
+                'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors',
+                type === t.value
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-foreground/80 hover:border-primary/50 hover:text-primary',
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <div className="relative w-full lg:max-w-sm">
+          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Rechercher par nom…"
-            className="pl-8"
+            aria-label="Rechercher une ressource"
+            className="pl-9"
             defaultValue={name}
             onChange={(e) => {
               const val = e.target.value
@@ -58,60 +82,58 @@ export function ResourcesPage() {
             }}
           />
         </div>
-        <Select value={type || 'all'} onValueChange={(v) => setParam('type', v === 'all' ? '' : v)}>
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les types</SelectItem>
-            <SelectItem value="room">Salles</SelectItem>
-            <SelectItem value="equipment">Matériel</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
-      {/* Results */}
       {loading ? (
         <div className="flex justify-center py-16">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
       ) : resources.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 py-16 text-center">
+        <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border py-16 text-center">
           <SlidersHorizontal className="h-10 w-10 text-muted-foreground/40" />
-          <p className="font-medium">Aucune ressource trouvée</p>
-          <p className="text-sm text-muted-foreground">Essayez de modifier vos filtres.</p>
+          <p className="font-medium">Aucune ressource ne correspond</p>
+          <p className="text-sm text-muted-foreground">Retirez un filtre ou cherchez un autre nom.</p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {resources.map((r) => (
-            <ResourceCard key={r.id} resource={r} />
-          ))}
-        </div>
+        <>
+          {pagination && (
+            <p className="text-sm text-muted-foreground">
+              {pagination.total} ressource{pagination.total > 1 ? 's' : ''}
+            </p>
+          )}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {resources.map((r) => (
+              <ResourceCard key={r.id} resource={r} />
+            ))}
+          </div>
+        </>
       )}
 
-      {/* Pagination */}
       {pagination && pagination.last_page > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
+        <nav
+          aria-label="Pagination"
+          className="flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3 shadow-card"
+        >
+          <button
+            type="button"
             disabled={page <= 1}
             onClick={() => setParam('page', page - 1)}
+            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
           >
-            Précédent
-          </Button>
+            <ChevronLeft className="h-4 w-4" /> Précédent
+          </button>
           <span className="text-sm text-muted-foreground">
-            Page {pagination.current_page} / {pagination.last_page}
+            Page {pagination.current_page} sur {pagination.last_page}
           </span>
-          <Button
-            variant="outline"
-            size="sm"
+          <button
+            type="button"
             disabled={page >= pagination.last_page}
             onClick={() => setParam('page', page + 1)}
+            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
           >
-            Suivant
-          </Button>
-        </div>
+            Suivant <ChevronRight className="h-4 w-4" />
+          </button>
+        </nav>
       )}
     </div>
   )

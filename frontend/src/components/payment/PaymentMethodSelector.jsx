@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-const PAYDUNYA_METHODS = [
+export const PAYDUNYA_METHODS = [
   {
     id: 'orange_money',
     label: 'Orange Money',

@@ -1,9 +1,26 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { CalendarCheck, LogOut, LayoutDashboard, Menu } from 'lucide-react'
+import { CalendarCheck, LogOut } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { toast } from '@/hooks/use-toast'
+import { cn } from '@/lib/utils'
+
+const linkClass = ({ isActive }) =>
+  cn(
+    'whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+    isActive
+      ? 'bg-primary text-primary-foreground'
+      : 'text-foreground/80 hover:bg-secondary hover:text-foreground',
+  )
+
+function initials(name = '') {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0].toUpperCase())
+    .join('')
+}
 
 export function Navbar() {
   const { user, logout } = useAuth()
@@ -12,67 +29,36 @@ export function Navbar() {
   const handleLogout = async () => {
     await logout()
     toast({ title: 'Déconnecté', description: 'À bientôt !' })
-    navigate('/login')
+    navigate('/')
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
-        {/* Logo */}
-        <Link to="/resources" className="flex items-center gap-2">
-          <CalendarCheck className="h-5 w-5 text-primary" />
-          <span className="font-display text-lg font-700 tracking-tight">Reservo</span>
+    <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-8 gap-y-2 px-4 py-3 sm:px-6 md:h-16 md:py-0 lg:px-8">
+        <Link to="/" className="flex items-center gap-2 text-primary">
+          <CalendarCheck className="h-6 w-6" />
+          <span className="font-display text-xl font-bold tracking-tight">Reservo</span>
         </Link>
 
-        <Separator orientation="vertical" className="h-5" />
-
-        {/* Nav links */}
-        <nav className="flex flex-1 items-center gap-1">
-          <NavLink
-            to="/resources"
-            className={({ isActive }) =>
-              `rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
-              }`
-            }
-          >
-            Ressources
-          </NavLink>
-
-          {user && (
-            <NavLink
-              to="/bookings"
-              className={({ isActive }) =>
-                `rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                  isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
-                }`
-              }
-            >
-              Mes réservations
-            </NavLink>
-          )}
-
-          {user?.role === 'admin' && (
-            <NavLink
-              to="/admin/resources"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                  isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
-                }`
-              }
-            >
-              <LayoutDashboard className="h-3.5 w-3.5" />
-              Admin
-            </NavLink>
-          )}
+        <nav
+          aria-label="Navigation principale"
+          className="order-last flex w-full items-center gap-1 overflow-x-auto md:order-none md:w-auto md:flex-1"
+        >
+          <NavLink to="/resources" className={linkClass}>Catalogue</NavLink>
+          {user && <NavLink to="/bookings" className={linkClass}>Mes réservations</NavLink>}
+          {user?.role === 'admin' && <NavLink to="/admin/resources" className={linkClass}>Administration</NavLink>}
         </nav>
 
-        {/* Auth actions */}
-        <div className="flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2 md:ml-0">
           {user ? (
             <>
-              <span className="hidden text-sm text-muted-foreground sm:block">{user.name}</span>
-              <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+              <div className="hidden items-center gap-2.5 sm:flex">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                  {initials(user.name)}
+                </span>
+                <span className="text-sm font-medium">{user.name}</span>
+              </div>
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 text-foreground/80">
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Déconnexion</span>
               </Button>
@@ -89,6 +75,7 @@ export function Navbar() {
           )}
         </div>
       </div>
+
     </header>
   )
 }
