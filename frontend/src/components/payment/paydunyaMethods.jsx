@@ -12,52 +12,10 @@ export const PAYDUNYA_METHODS = [
     logo: <img src="/payments/wave.png" alt="" className="h-6 w-6 rounded object-contain" />,
   },
   {
-    id: 'free_money',
-    label: 'Free Money',
-    color: '#E30613',
-    logo: (
-      <svg viewBox="0 0 48 48" fill="none" className="h-6 w-6">
-        <circle cx="24" cy="24" r="24" fill="#E30613" />
-        <text
-          x="24"
-          y="30"
-          textAnchor="middle"
-          fill="white"
-          fontSize="16"
-          fontWeight="bold"
-          fontFamily="sans-serif"
-        >
-          F
-        </text>
-      </svg>
-    ),
-  },
-  {
     id: 'djamo',
     label: 'Djamo',
     color: '#7B2FBE',
     logo: <img src="/payments/djamo.png" alt="" className="h-6 w-6 rounded object-contain" />,
-  },
-  {
-    id: 'expresso',
-    label: 'Expresso',
-    color: '#00A651',
-    logo: (
-      <svg viewBox="0 0 48 48" fill="none" className="h-6 w-6">
-        <circle cx="24" cy="24" r="24" fill="#00A651" />
-        <text
-          x="24"
-          y="30"
-          textAnchor="middle"
-          fill="white"
-          fontSize="13"
-          fontWeight="bold"
-          fontFamily="sans-serif"
-        >
-          EX
-        </text>
-      </svg>
-    ),
   },
   {
     id: 'card',

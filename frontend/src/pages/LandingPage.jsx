@@ -20,7 +20,7 @@ const STEPS = [
   },
   {
     title: 'Payez',
-    text: 'Orange Money, Wave, Free Money, carte bancaire. La réservation est confirmée dès réception du paiement.',
+    text: 'Orange Money, Wave, Djamo ou carte bancaire. La réservation est confirmée dès réception du paiement.',
   },
 ]
 
