@@ -73,6 +73,7 @@ User picks a slot ──► POST /bookings            (status: pending)
                  redirect to the provider's page, user pays
                           │
 Provider ──► POST /paydunya/webhook  (or /stripe/webhook)
+Return page ──► POST /bookings/{id}/paydunya-sync   (PayDunya only)
                           │ PayDunya: the invoice is re-fetched from PayDunya's API
                           │ Stripe:   the signature is verified
                           ▼
@@ -140,7 +141,7 @@ plus 7 resources (4 rooms, 3 equipment items) priced from 5 000 to 50 000 F CFA/
 
 ### 4. Try a payment
 
-In PayDunya's dashboard, create a fictitious customer (*Clients fictifs*) for your test application. Book a slot, choose PayDunya and complete the checkout with that customer. The IPN needs a public URL (for example a tunnel) pointing to `/paydunya/webhook`; without it the booking stays `pending`.
+In PayDunya's dashboard, create a fictitious customer (*Clients fictifs*) for your test application. Book a slot, choose PayDunya and complete the checkout with that customer. PayDunya's IPN cannot reach `localhost`, so the return page also settles the booking: it calls `POST /bookings/{id}/paydunya-sync`, and the server asks PayDunya whether the invoice is completed (the redirect itself proves nothing). A pending booking with a started payment also has a *Vérifier mon paiement* button. In production, point the IPN to `/paydunya/webhook`.
 
 For Stripe webhooks: `stripe listen --forward-to localhost/stripe/webhook`.
 
@@ -178,6 +179,7 @@ Prefix `/api/v1`. Authentication uses Sanctum cookie sessions: call `GET /sanctu
 | GET | `/bookings/{id}` | user | Detail |
 | DELETE | `/bookings/{id}` | user | Cancel |
 | POST | `/bookings/{id}/paydunya-checkout` | user | Start a PayDunya checkout |
+| POST | `/bookings/{id}/paydunya-sync` | user | Ask PayDunya for the invoice status and settle the booking |
 | POST | `/bookings/{id}/checkout` | user | Start a Stripe checkout |
 | POST | `/paydunya/webhook`, `/stripe/webhook` | — | Provider webhooks (no CSRF) |
 

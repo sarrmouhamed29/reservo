@@ -42,7 +42,7 @@ services:
       - frontend_dist:/app/dist
     networks:
       - reservo_net
-    command: sh -c "npm ci && npm run build"
+    command: sh -c "npm ci --prefer-offline --no-audit --no-fund --fetch-retries=5 && npm run build"
     restart: "no"
 
   nginx:

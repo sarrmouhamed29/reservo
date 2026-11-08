@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CalendarClock, LifeBuoy, CalendarX, Clock, Timer, Wallet } from 'lucide-react'
-import { cancelBooking, createPayDunyaCheckout, listBookings } from '@/api/bookings'
+import { cancelBooking, createPayDunyaCheckout, listBookings, syncPayDunya } from '@/api/bookings'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -78,6 +78,7 @@ export function BookingsPage() {
   const [cancelTarget, setCancelTarget] = useState(null)
   const [cancelling, setCancelling] = useState(false)
   const [checkingOut, setCheckingOut] = useState(null)
+  const [verifying, setVerifying] = useState(null)
 
   const fetchBookings = useCallback(() => {
     setLoading(true)
@@ -136,6 +137,28 @@ export function BookingsPage() {
         description: 'Impossible de lancer le paiement. Réessayez dans un instant.',
       })
       setCheckingOut(null)
+    }
+  }
+
+  const handleVerify = async (booking) => {
+    setVerifying(booking.id)
+    try {
+      const { data } = await syncPayDunya(booking.id)
+      if (data.data.status === 'paid') toast({ title: 'Paiement confirmé' })
+      else
+        toast({
+          title: 'Paiement pas encore confirmé',
+          description: "PayDunya n'a pas encore validé ce paiement.",
+        })
+      fetchBookings()
+    } catch {
+      toast({
+        variant: 'destructive',
+        title: 'Vérification impossible',
+        description: 'Réessayez dans un instant.',
+      })
+    } finally {
+      setVerifying(null)
     }
   }
 
@@ -306,6 +329,15 @@ export function BookingsPage() {
                         >
                           Annuler
                         </Button>
+                        {b.paydunya_payment_started && (
+                          <Button
+                            variant="outline"
+                            onClick={() => handleVerify(b)}
+                            disabled={verifying === b.id}
+                          >
+                            {verifying === b.id ? 'Vérification…' : 'Vérifier mon paiement'}
+                          </Button>
+                        )}
                         <Button onClick={() => handlePay(b)} disabled={checkingOut === b.id}>
                           {checkingOut === b.id ? 'Redirection…' : 'Payer maintenant'}
                         </Button>
