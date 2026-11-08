@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\Bookings\CancelBookingAction;
 use App\Actions\Bookings\CreateBookingAction;
+use App\Enums\BookingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Resources\BookingResource;
@@ -47,6 +48,10 @@ class BookingController extends Controller
     public function destroy(Booking $booking, CancelBookingAction $action): JsonResponse
     {
         $this->authorize('cancel', $booking);
+
+        if ($booking->status === BookingStatus::Cancelled) {
+            return response()->json(['message' => 'Booking is already cancelled.'], 409);
+        }
 
         $action->execute($booking);
 

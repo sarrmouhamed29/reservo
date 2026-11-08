@@ -16,7 +16,9 @@ class RegisterController extends Controller
         $user = $action->execute($request->validated());
 
         Auth::login($user);
-        $request->session()->regenerate();
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
 
         return (new UserResource($user))
             ->response()

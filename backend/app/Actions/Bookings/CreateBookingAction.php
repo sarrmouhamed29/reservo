@@ -19,7 +19,7 @@ class CreateBookingAction
         $startsAt = \Carbon\Carbon::parse($data['starts_at']);
         $endsAt   = \Carbon\Carbon::parse($data['ends_at']);
 
-        $durationHours = $endsAt->diffInMinutes($startsAt) / 60;
+        $durationHours = $startsAt->diffInMinutes($endsAt) / 60;
         $totalPriceCents = (int) ceil($durationHours * $resource->hourly_price_cents);
 
         try {
