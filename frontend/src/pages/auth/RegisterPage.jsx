@@ -4,7 +4,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
 
 export function RegisterPage() {
@@ -34,43 +33,76 @@ export function RegisterPage() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Créer un compte</CardTitle>
-        <CardDescription>Rejoignez Reservo pour réserver vos espaces.</CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Nom complet</Label>
-            <Input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Jean Dupont" />
-            {errors.name && <p className="text-xs text-destructive">{errors.name[0]}</p>}
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="vous@exemple.com" />
-            {errors.email && <p className="text-xs text-destructive">{errors.email[0]}</p>}
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password">Mot de passe</Label>
-            <Input id="password" name="password" type="password" value={form.password} onChange={handleChange} />
-            {errors.password && <p className="text-xs text-destructive">{errors.password[0]}</p>}
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password_confirmation">Confirmer le mot de passe</Label>
-            <Input id="password_confirmation" name="password_confirmation" type="password" value={form.password_confirmation} onChange={handleChange} />
-          </div>
-        </CardContent>
-        <CardFooter className="flex-col gap-3">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Inscription…' : 'Créer mon compte'}
-          </Button>
-          <p className="text-center text-sm text-muted-foreground">
-            Déjà un compte ?{' '}
-            <Link to="/login" className="text-primary hover:underline">Se connecter</Link>
-          </p>
-        </CardFooter>
+    <div className="space-y-6">
+      <div>
+        <h2 className="font-display text-2xl font-bold tracking-tight">Créer un compte</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Rejoignez Reservo pour réserver vos espaces.</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="name">Nom complet</Label>
+          <Input
+            id="name"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Jean Dupont"
+            className="h-10"
+          />
+          {errors.name && <p className="text-xs text-destructive">{errors.name[0]}</p>}
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="email">Adresse email</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="vous@exemple.com"
+            className="h-10"
+          />
+          {errors.email && <p className="text-xs text-destructive">{errors.email[0]}</p>}
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="password">Mot de passe</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            className="h-10"
+          />
+          {errors.password && <p className="text-xs text-destructive">{errors.password[0]}</p>}
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="password_confirmation">Confirmer le mot de passe</Label>
+          <Input
+            id="password_confirmation"
+            name="password_confirmation"
+            type="password"
+            value={form.password_confirmation}
+            onChange={handleChange}
+            className="h-10"
+          />
+        </div>
+
+        <Button type="submit" className="h-10 w-full font-medium" disabled={loading}>
+          {loading ? 'Inscription…' : 'Créer mon compte'}
+        </Button>
       </form>
-    </Card>
+
+      <p className="text-center text-sm text-muted-foreground">
+        Déjà un compte ?{' '}
+        <Link to="/login" className="font-medium text-primary hover:underline">
+          Se connecter
+        </Link>
+      </p>
+    </div>
   )
 }
